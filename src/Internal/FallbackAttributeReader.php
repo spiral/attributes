@@ -203,9 +203,11 @@ final class FallbackAttributeReader extends AttributeReader
          *  $ast->getEndLine(); // 2 (last significant character of a function)
          * </code>
          */
-        while ($line-- > 0) {
-            if ($result = $attributes[$line] ?? null) {
-                return $result;
+        if ($function->isClosure()) {
+            while ($line-- > $function->getStartLine()) {
+                if ($result = $attributes[$line] ?? null) {
+                    return $result;
+                }
             }
         }
 
