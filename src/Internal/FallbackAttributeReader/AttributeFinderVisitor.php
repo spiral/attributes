@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Attributes\Internal;
+namespace Spiral\Attributes\Internal\FallbackAttributeReader;
 
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Property;

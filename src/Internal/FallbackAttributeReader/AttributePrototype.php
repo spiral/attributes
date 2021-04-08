@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Attributes\Internal;
+namespace Spiral\Attributes\Internal\FallbackAttributeReader;
 
 /**
  * @internal AttributePrototype is an internal library class, please do not use it in your code.

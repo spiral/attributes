@@ -12,6 +12,9 @@ declare(strict_types=1);
 namespace Spiral\Attributes\Internal;
 
 use PhpParser\Parser;
+use Spiral\Attributes\Internal\FallbackAttributeReader\AttributeParser;
+use Spiral\Attributes\Internal\FallbackAttributeReader\AttributePrototype;
+use Spiral\Attributes\Internal\FallbackAttributeReader\Context;
 
 /**
  * @internal FallbackAttributeReader is an internal library class, please do not use it in your code.

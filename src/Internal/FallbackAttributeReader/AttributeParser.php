@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Attributes\Internal;
+namespace Spiral\Attributes\Internal\FallbackAttributeReader;
 
 use PhpParser\ConstExprEvaluationException;
 use PhpParser\ConstExprEvaluator;
@@ -21,7 +21,7 @@ use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\Parser;
 use PhpParser\ParserFactory;
-use PhpParser\PrettyPrinter\Standard;
+use Spiral\Attributes\Internal\Exception;
 
 class AttributeParser
 {

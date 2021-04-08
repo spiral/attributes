@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Spiral\Attributes\Internal;
 
+use Spiral\Attributes\Internal\FallbackAttributeReader\Context;
 use Spiral\Attributes\Internal\Instantiator\Factory;
 use Spiral\Attributes\Internal\Instantiator\InstantiatorInterface;
 use Spiral\Attributes\Reader;
