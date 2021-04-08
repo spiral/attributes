@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Tests\Attributes\Reader\Complex;
+namespace Spiral\Tests\Attributes\Reader;
 
 use Spiral\Attributes\AnnotationReader;
 use Spiral\Attributes\ReaderInterface;
@@ -23,9 +23,8 @@ use Spiral\Attributes\ReaderInterface;
  *
  * @group unit
  * @group reader
- * @group complex
  */
-class DoctrineReaderTest extends ComplexTestCase
+class DoctrineReaderTestCase extends ComplexTestCase
 {
     protected $functionMetadataCount = 0;
     protected $functionParameterMetadataCount = 0;

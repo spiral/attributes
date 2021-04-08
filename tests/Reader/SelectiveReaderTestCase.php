@@ -9,20 +9,24 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Tests\Attributes\Reader\Complex;
+namespace Spiral\Tests\Attributes\Reader;
 
-use Spiral\Attributes\Internal\FallbackAttributeReader;
+use Spiral\Attributes\AnnotationReader;
+use Spiral\Attributes\AttributeReader;
+use Spiral\Attributes\Composite\SelectiveReader;
 use Spiral\Attributes\ReaderInterface;
 
 /**
  * @group unit
  * @group reader
- * @group complex
  */
-class FallbackReaderTest extends ComplexTestCase
+class SelectiveReaderTestCase extends ComplexTestCase
 {
     protected function getReader(): ReaderInterface
     {
-        return new FallbackAttributeReader();
+        return new SelectiveReader([
+            new AttributeReader(),
+            new AnnotationReader()
+        ]);
     }
 }

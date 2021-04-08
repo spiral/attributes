@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Tests\Attributes\Reader\Complex;
+namespace Spiral\Tests\Attributes\Reader;
 
 use Spiral\Attributes\Internal\NativeAttributeReader;
 use Spiral\Attributes\ReaderInterface;
@@ -19,9 +19,8 @@ use Spiral\Attributes\ReaderInterface;
  *
  * @group unit
  * @group reader
- * @group complex
  */
-class NativeReaderTest extends ComplexTestCase
+class NativeReaderTestCase extends ComplexTestCase
 {
     protected function getReader(): ReaderInterface
     {

@@ -11,10 +11,8 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\Attributes\Instantiator;
 
-use Spiral\Attributes\Internal\Instantiator\DoctrineInstantiator;
 use Spiral\Attributes\Internal\Instantiator\InstantiatorInterface;
 use Spiral\Tests\Attributes\Concerns\InteractWithReflection;
-use Spiral\Tests\Attributes\Instantiator\Fixtures\DoctrineLikeArrayConstructorFixture;
 use Spiral\Tests\Attributes\TestCase;
 
 /**
@@ -32,15 +30,18 @@ abstract class InstantiatorTestCase extends TestCase
 
     /**
      * @template T of object
-     * @param class-string<T> $class
+     * @param string $class
      * @param array $arguments
      * @return T
+     * @throws \Throwable
      */
     protected function new(string $class, array $arguments = []): object
     {
         $reflection = $this->getReflectionClass($class);
         $instantiator = $this->getInstantiator();
 
-        return $instantiator->instantiate($reflection, $arguments, static::class);
+        return $instantiator->instantiate($reflection, $arguments,
+            $this->getReflectionClass(static::class)
+        );
     }
 }

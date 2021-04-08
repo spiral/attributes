@@ -9,8 +9,9 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Tests\Attributes\Reader\Complex;
+namespace Spiral\Tests\Attributes\Reader;
 
+use Spiral\Tests\Attributes\Concerns\InteractWithMetadata;
 use Spiral\Tests\Attributes\Reader\Fixture\AnnotatedClass;
 use Spiral\Tests\Attributes\Reader\Fixture\Annotation\ClassAnnotation;
 use Spiral\Tests\Attributes\Reader\Fixture\Annotation\ConstantAnnotation;
@@ -19,15 +20,16 @@ use Spiral\Tests\Attributes\Reader\Fixture\Annotation\FunctionParameterAnnotatio
 use Spiral\Tests\Attributes\Reader\Fixture\Annotation\MethodAnnotation;
 use Spiral\Tests\Attributes\Reader\Fixture\Annotation\MethodParameterAnnotation;
 use Spiral\Tests\Attributes\Reader\Fixture\Annotation\PropertyAnnotation;
-use Spiral\Tests\Attributes\Reader\ReaderTestCase;
+use Spiral\Tests\Attributes\TestCase;
 
 /**
  * @group unit
  * @group reader
- * @group complex
  */
-abstract class ComplexTestCase extends ReaderTestCase
+abstract class ComplexTestCase extends TestCase
 {
+    use InteractWithMetadata;
+
     /**
      * @var string
      */
@@ -67,6 +69,13 @@ abstract class ComplexTestCase extends ReaderTestCase
      * @var int
      */
     protected $functionParameterMetadataCount = 1;
+
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+
+        require_once __DIR__ . '/Fixture/function.php';
+    }
 
     public function testClassMetadataCount(): void
     {

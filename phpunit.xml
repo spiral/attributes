@@ -13,7 +13,7 @@
          stderr="true">
     <testsuites>
         <testsuite name="Test Suite">
-            <directory>tests</directory>
+            <directory suffix="TestCase.php">tests</directory>
         </testsuite>
     </testsuites>
     <filter>
