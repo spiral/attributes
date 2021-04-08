@@ -29,7 +29,7 @@ use PhpParser\NodeVisitorAbstract;
  * @psalm-type PropertyName = string
  * @psalm-type ParameterName = string
  */
-class AttributeFinderVisitor extends NodeVisitorAbstract
+final class AttributeFinderVisitor extends NodeVisitorAbstract
 {
     /**
      * @var array

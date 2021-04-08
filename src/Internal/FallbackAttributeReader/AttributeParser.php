@@ -23,7 +23,7 @@ use PhpParser\Parser;
 use PhpParser\ParserFactory;
 use Spiral\Attributes\Internal\Exception;
 
-class AttributeParser
+final class AttributeParser
 {
     /**
      * @var string

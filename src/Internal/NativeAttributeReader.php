@@ -17,7 +17,7 @@ use Spiral\Attributes\Exception\InitializationException;
  * @internal NativeAttributeReader is an internal library class, please do not use it in your code.
  * @psalm-internal Spiral\Attributes
  */
-class NativeAttributeReader extends AttributeReader
+final class NativeAttributeReader extends AttributeReader
 {
     /**
      * NativeAttributeReader constructor.

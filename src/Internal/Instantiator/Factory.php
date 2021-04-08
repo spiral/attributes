@@ -11,11 +11,12 @@ declare(strict_types=1);
 
 namespace Spiral\Attributes\Internal\Instantiator;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\NamedArgumentConstructorAnnotation as MarkerAnnotation;
 use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor as MarkerInterface;
+use Spiral\Attributes\AnnotationReader;
+use Spiral\Attributes\ReaderInterface;
 
-class Factory implements InstantiatorInterface
+final class Factory implements InstantiatorInterface
 {
     /**
      * @var DoctrineInstantiator
@@ -28,18 +29,19 @@ class Factory implements InstantiatorInterface
     private $named;
 
     /**
-     * @var AnnotationReader
+     * @var ReaderInterface
      */
-    private $annotations;
+    private $reader;
 
     /**
-     * Factory constructor.
+     * @param ReaderInterface|null $reader
      */
-    public function __construct()
+    public function __construct(ReaderInterface $reader = null)
     {
+        $this->reader = $reader ?? new AnnotationReader();
+
         $this->doctrine = new DoctrineInstantiator();
         $this->named = new NamedArgumentsInstantiator();
-        $this->annotations = new AnnotationReader();
     }
 
     /**
@@ -76,7 +78,7 @@ class Factory implements InstantiatorInterface
     private function providesNamedArgumentsAttribute(\ReflectionClass $class): bool
     {
         if (\class_exists(MarkerAnnotation::class)) {
-            return $this->annotations->getClassAnnotation($class, MarkerAnnotation::class) !== null;
+            return $this->reader->firstClassMetadata($class, MarkerAnnotation::class) !== null;
         }
 
         return false;

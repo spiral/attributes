@@ -15,7 +15,7 @@ namespace Spiral\Attributes\Internal\FallbackAttributeReader;
  * @internal Context is an internal library class, please do not use it in your code.
  * @psalm-internal Spiral\Attributes
  */
-class Context
+final class Context
 {
     /**
      * @var string
@@ -64,10 +64,10 @@ class Context
     public function getClassContext(\ReflectionClass $class): string
     {
         if ($class->isAnonymous()) {
-            return \sprintf(static::FORMAT_ANONYMOUS_CLASS, $class->getFileName(), $class->getStartLine());
+            return \sprintf(self::FORMAT_ANONYMOUS_CLASS, $class->getFileName(), $class->getStartLine());
         }
 
-        return \sprintf(static::FORMAT_CLASS, $class->getName());
+        return \sprintf(self::FORMAT_CLASS, $class->getName());
     }
 
     /**
@@ -78,7 +78,7 @@ class Context
     {
         $class = $method->getDeclaringClass();
 
-        return \sprintf(static::FORMAT_METHOD, $class->getName(), $method->getName());
+        return \sprintf(self::FORMAT_METHOD, $class->getName(), $method->getName());
     }
 
     /**
