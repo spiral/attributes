@@ -13,7 +13,6 @@ namespace Spiral\Attributes;
 
 use Spiral\Attributes\Internal\Decorator;
 use Spiral\Attributes\Internal\FallbackAttributeReader;
-use Spiral\Attributes\Internal\Instantiator\Factory;
 use Spiral\Attributes\Internal\Instantiator\InstantiatorInterface;
 use Spiral\Attributes\Internal\NativeAttributeReader;
 
@@ -24,8 +23,6 @@ final class AttributeReader extends Decorator
      */
     public function __construct(InstantiatorInterface $instantiator = null)
     {
-        $instantiator ??= new Factory($this);
-
         $reader = NativeAttributeReader::isAvailable()
             ? new NativeAttributeReader($instantiator)
             : new FallbackAttributeReader($instantiator)

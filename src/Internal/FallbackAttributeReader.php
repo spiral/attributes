@@ -67,7 +67,7 @@ final class FallbackAttributeReader extends AttributeReader
     {
         $this->parser = new AttributeParser($parser);
 
-        parent::__construct($instantiator ?? new Factory($this));
+        parent::__construct($instantiator ?? new Factory());
     }
 
     /**

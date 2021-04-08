@@ -28,7 +28,7 @@ final class NativeAttributeReader extends AttributeReader
     {
         $this->checkAvailability();
 
-        parent::__construct($instantiator ?? new Factory($this));
+        parent::__construct($instantiator ?? new Factory());
     }
 
     /**

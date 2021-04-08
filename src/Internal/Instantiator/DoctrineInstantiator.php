@@ -52,7 +52,7 @@ final class DoctrineInstantiator extends Instantiator
     /**
      * @param \ReflectionClass $attr
      * @param array $arguments
-     * @param string $context
+     * @param class-string $context
      * @return object
      * @throws \ReflectionException
      */

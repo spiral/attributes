@@ -32,7 +32,7 @@ final class NamedArgumentsInstantiator extends Instantiator
     /**
      * @param \ReflectionClass $attr
      * @param array $arguments
-     * @param string $context
+     * @param class-string $context
      * @return object
      * @throws \Throwable
      */
@@ -108,7 +108,7 @@ final class NamedArgumentsInstantiator extends Instantiator
                 } finally {
                     unset($arguments[$param->getName()]);
                 }
-            // no actual falling through
+                // no actual falling through
 
             case \array_key_exists($param->getPosition(), $arguments):
                 try {
@@ -116,7 +116,7 @@ final class NamedArgumentsInstantiator extends Instantiator
                 } finally {
                     unset($arguments[$param->getPosition()]);
                 }
-            // no actual falling through
+                // no actual falling through
 
             case $param->isDefaultValueAvailable():
                 return $param->getDefaultValue();

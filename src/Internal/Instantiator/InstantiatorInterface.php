@@ -20,7 +20,7 @@ interface InstantiatorInterface
     /**
      * @param \ReflectionClass $attr
      * @param array $arguments
-     * @param string $context
+     * @param class-string $context
      * @return object
      */
     public function instantiate(\ReflectionClass $attr, array $arguments, string $context): object;
