@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Attributes\Internal\FallbackAttributeReader;
+namespace Spiral\Attributes\Internal\Instantiator;
 
 /**
  * @internal Context is an internal library class, please do not use it in your code.
  * @psalm-internal Spiral\Attributes
  */
-final class Context
+final class ContextRenderer
 {
     /**
      * @var string
@@ -58,10 +58,37 @@ final class Context
     protected const FORMAT_PARAMETER = 'parameter $%s of %s';
 
     /**
+     * @param \Reflector|null $reflector
+     * @return string
+     */
+    public function render(?\Reflector $reflector): string
+    {
+        switch (true) {
+            case $reflector instanceof \ReflectionClass:
+                return $this->renderClassContext($reflector);
+
+            case $reflector instanceof \ReflectionFunctionAbstract:
+                return $this->renderCallableContext($reflector);
+
+            case $reflector instanceof \ReflectionProperty:
+                return $this->renderPropertyContext($reflector);
+
+            case $reflector instanceof \ReflectionClassConstant:
+                return $this->renderConstantContext($reflector);
+
+            case $reflector instanceof \ReflectionParameter:
+                return $this->renderParameterContext($reflector);
+
+            default:
+                return '<unknown>';
+        }
+    }
+
+    /**
      * @param \ReflectionClass $class
      * @return string
      */
-    public function getClassContext(\ReflectionClass $class): string
+    public function renderClassContext(\ReflectionClass $class): string
     {
         if ($class->isAnonymous()) {
             return \sprintf(self::FORMAT_ANONYMOUS_CLASS, $class->getFileName(), $class->getStartLine());
@@ -74,7 +101,7 @@ final class Context
      * @param \ReflectionMethod $method
      * @return string
      */
-    public function getMethodContext(\ReflectionMethod $method): string
+    public function renderMethodContext(\ReflectionMethod $method): string
     {
         $class = $method->getDeclaringClass();
 
@@ -85,7 +112,7 @@ final class Context
      * @param \ReflectionFunction $fn
      * @return string
      */
-    public function getFunctionContext(\ReflectionFunction $fn): string
+    public function renderFunctionContext(\ReflectionFunction $fn): string
     {
         if ($fn->isClosure()) {
             return \sprintf(self::FORMAT_ANONYMOUS_FUNCTION, $fn->getFileName(), $fn->getStartLine());
@@ -98,14 +125,14 @@ final class Context
      * @param \ReflectionFunctionAbstract $function
      * @return string
      */
-    public function getCallableContext(\ReflectionFunctionAbstract $function): string
+    public function renderCallableContext(\ReflectionFunctionAbstract $function): string
     {
         if ($function instanceof \ReflectionMethod) {
-            return $this->getMethodContext($function);
+            return $this->renderMethodContext($function);
         }
 
         if ($function instanceof \ReflectionFunction) {
-            return $this->getFunctionContext($function);
+            return $this->renderFunctionContext($function);
         }
 
         // Compatibility mode
@@ -116,7 +143,7 @@ final class Context
      * @param \ReflectionProperty $property
      * @return string
      */
-    public function getPropertyContext(\ReflectionProperty $property): string
+    public function renderPropertyContext(\ReflectionProperty $property): string
     {
         $class = $property->getDeclaringClass();
 
@@ -127,7 +154,7 @@ final class Context
      * @param \ReflectionClassConstant $const
      * @return string
      */
-    public function getConstantContext(\ReflectionClassConstant $const): string
+    public function renderConstantContext(\ReflectionClassConstant $const): string
     {
         $class = $const->getDeclaringClass();
 
@@ -138,9 +165,9 @@ final class Context
      * @param \ReflectionParameter $param
      * @return string
      */
-    public function getParameterContext(\ReflectionParameter $param): string
+    public function renderParameterContext(\ReflectionParameter $param): string
     {
-        $context = $this->getCallableContext($param->getDeclaringFunction());
+        $context = $this->renderCallableContext($param->getDeclaringFunction());
 
         return \sprintf(self::FORMAT_PARAMETER, $param->getName(), $context);
     }

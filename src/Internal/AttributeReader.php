@@ -11,8 +11,6 @@ declare(strict_types=1);
 
 namespace Spiral\Attributes\Internal;
 
-use Spiral\Attributes\Internal\FallbackAttributeReader\Context;
-use Spiral\Attributes\Internal\Instantiator\Factory;
 use Spiral\Attributes\Internal\Instantiator\InstantiatorInterface;
 use Spiral\Attributes\Reader;
 
@@ -28,17 +26,11 @@ abstract class AttributeReader extends Reader
     private $instantiator;
 
     /**
-     * @var Context
-     */
-    private $ctx;
-
-    /**
      * @param InstantiatorInterface $instantiator
      */
     public function __construct(InstantiatorInterface $instantiator)
     {
         $this->instantiator = $instantiator;
-        $this->ctx = new Context();
     }
 
     /**
@@ -48,10 +40,9 @@ abstract class AttributeReader extends Reader
     public function getClassMetadata(\ReflectionClass $class, string $name = null): iterable
     {
         $attributes = $this->getClassAttributes($class, $name);
-        $context = $this->ctx->getClassContext($class);
 
         foreach ($attributes as $attribute => $arguments) {
-            yield $this->instantiate($attribute, $arguments, $context);
+            yield $this->instantiator->instantiate($attribute, $arguments, $class);
         }
     }
 
@@ -62,10 +53,9 @@ abstract class AttributeReader extends Reader
     public function getFunctionMetadata(\ReflectionFunctionAbstract $function, string $name = null): iterable
     {
         $attributes = $this->getFunctionAttributes($function, $name);
-        $context = $this->ctx->getCallableContext($function);
 
         foreach ($attributes as $attribute => $arguments) {
-            yield $this->instantiate($attribute, $arguments, $context);
+            yield $this->instantiator->instantiate($attribute, $arguments, $function);
         }
     }
 
@@ -76,10 +66,9 @@ abstract class AttributeReader extends Reader
     public function getPropertyMetadata(\ReflectionProperty $property, string $name = null): iterable
     {
         $attributes = $this->getPropertyAttributes($property, $name);
-        $context = $this->ctx->getPropertyContext($property);
 
         foreach ($attributes as $attribute => $arguments) {
-            yield $this->instantiate($attribute, $arguments, $context);
+            yield $this->instantiator->instantiate($attribute, $arguments, $property);
         }
     }
 
@@ -90,10 +79,9 @@ abstract class AttributeReader extends Reader
     public function getConstantMetadata(\ReflectionClassConstant $constant, string $name = null): iterable
     {
         $attributes = $this->getConstantAttributes($constant, $name);
-        $context = $this->ctx->getConstantContext($constant);
 
         foreach ($attributes as $attribute => $arguments) {
-            yield $this->instantiate($attribute, $arguments, $context);
+            yield $this->instantiator->instantiate($attribute, $arguments, $constant);
         }
     }
 
@@ -104,10 +92,9 @@ abstract class AttributeReader extends Reader
     public function getParameterMetadata(\ReflectionParameter $parameter, string $name = null): iterable
     {
         $attributes = $this->getParameterAttributes($parameter, $name);
-        $context = $this->ctx->getParameterContext($parameter);
 
         foreach ($attributes as $attribute => $arguments) {
-            yield $this->instantiate($attribute, $arguments, $context);
+            yield $this->instantiator->instantiate($attribute, $arguments, $parameter);
         }
     }
 
@@ -145,16 +132,4 @@ abstract class AttributeReader extends Reader
      * @return iterable<\ReflectionClass, array>
      */
     abstract protected function getParameterAttributes(\ReflectionParameter $param, ?string $name): iterable;
-
-    /**
-     * @param \ReflectionClass $attribute
-     * @param array $arguments
-     * @param string $context
-     * @return object
-     * @throws \Throwable
-     */
-    private function instantiate(\ReflectionClass $attribute, array $arguments, string $context): object
-    {
-        return $this->instantiator->instantiate($attribute, $arguments, $context);
-    }
 }

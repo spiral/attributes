@@ -14,7 +14,7 @@ namespace Spiral\Attributes\Internal;
 use PhpParser\Parser;
 use Spiral\Attributes\Internal\FallbackAttributeReader\AttributeParser;
 use Spiral\Attributes\Internal\FallbackAttributeReader\AttributePrototype;
-use Spiral\Attributes\Internal\FallbackAttributeReader\Context;
+use Spiral\Attributes\Internal\Instantiator\ContextRenderer;
 use Spiral\Attributes\Internal\Instantiator\Factory;
 use Spiral\Attributes\Internal\Instantiator\InstantiatorInterface;
 
@@ -240,7 +240,7 @@ final class FallbackAttributeReader extends AttributeReader
      * @psalm-type Context = FallbackAttributeReader::KEY_*
      *
      * @param string $file
-     * @param Context $context
+     * @param ContextRenderer $context
      * @return array
      */
     private function parseAttributes(string $file, int $context): array

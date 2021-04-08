@@ -45,13 +45,9 @@ final class Factory implements InstantiatorInterface
     }
 
     /**
-     * @param \ReflectionClass $attr
-     * @param array $arguments
-     * @param class-string $context
-     * @return object
-     * @throws \Throwable
+     * {@inheritDoc}
      */
-    public function instantiate(\ReflectionClass $attr, array $arguments, string $context): object
+    public function instantiate(\ReflectionClass $attr, array $arguments, \Reflector $context = null): object
     {
         if ($this->isNamedArguments($attr)) {
             return $this->named->instantiate($attr, $arguments, $context);
