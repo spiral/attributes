@@ -11,7 +11,9 @@ declare(strict_types=1);
 
 namespace Spiral\Attributes\Internal\Instantiator;
 
-use Doctrine\Common\Annotations\NamedArgumentConstructorAnnotation;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\NamedArgumentConstructorAnnotation as MarkerAnnotation;
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor as MarkerInterface;
 
 class Factory implements InstantiatorInterface
 {
@@ -26,12 +28,18 @@ class Factory implements InstantiatorInterface
     private $named;
 
     /**
+     * @var AnnotationReader
+     */
+    private $annotations;
+
+    /**
      * Factory constructor.
      */
     public function __construct()
     {
         $this->doctrine = new DoctrineInstantiator();
         $this->named = new NamedArgumentsInstantiator();
+        $this->annotations = new AnnotationReader();
     }
 
     /**
@@ -39,6 +47,7 @@ class Factory implements InstantiatorInterface
      * @param array $arguments
      * @param string $context
      * @return object
+     * @throws \Throwable
      */
     public function instantiate(\ReflectionClass $attr, array $arguments, string $context): object
     {
@@ -55,6 +64,30 @@ class Factory implements InstantiatorInterface
      */
     private function isNamedArguments(\ReflectionClass $class): bool
     {
-        return \is_subclass_of($class->getName(), NamedArgumentConstructorAnnotation::class);
+        return $this->providesNamedArgumentsInterface($class) ||
+            $this->providesNamedArgumentsAttribute($class)
+        ;
+    }
+
+    /**
+     * @param \ReflectionClass $class
+     * @return bool
+     */
+    private function providesNamedArgumentsAttribute(\ReflectionClass $class): bool
+    {
+        if (\class_exists(MarkerAnnotation::class)) {
+            return $this->annotations->getClassAnnotation($class, MarkerAnnotation::class) !== null;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param \ReflectionClass $class
+     * @return bool
+     */
+    private function providesNamedArgumentsInterface(\ReflectionClass $class): bool
+    {
+        return \is_subclass_of($class->getName(), MarkerInterface::class);
     }
 }
