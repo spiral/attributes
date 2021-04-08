@@ -9,13 +9,10 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Tests\Attributes\Fixture\Annotation;
+namespace Spiral\Tests\Attributes\Reader\Fixture\Annotation;
 
-/**
- * @Annotation
- * @Target({ "PROPERTY" })
- */
-#[\Attribute(\Attribute::TARGET_PROPERTY)]
-class PropertyAnnotation extends Annotation
+/** @Annotation */
+#[\Attribute(\Attribute::TARGET_PARAMETER)]
+class FunctionParameterAnnotation extends Annotation
 {
 }

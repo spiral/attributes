@@ -17,4 +17,14 @@ use Spiral\Tests\Attributes\TestCase;
 abstract class ReaderTestCase extends TestCase
 {
     use InteractWithMetadata;
+
+    /**
+     * @return void
+     */
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+
+        require_once __DIR__ . '/Fixture/function.php';
+    }
 }

@@ -11,19 +11,23 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\Attributes\Reader\Complex;
 
-use Spiral\Tests\Attributes\Concerns\InteractWithMetadata;
-use Spiral\Tests\Attributes\Fixture\AnnotatedClass;
-use Spiral\Tests\Attributes\Fixture\Annotation\ClassAnnotation;
-use Spiral\Tests\Attributes\Fixture\Annotation\ConstantAnnotation;
-use Spiral\Tests\Attributes\Fixture\Annotation\FunctionAnnotation;
-use Spiral\Tests\Attributes\Fixture\Annotation\FunctionParameterAnnotation;
-use Spiral\Tests\Attributes\Fixture\Annotation\MethodAnnotation;
-use Spiral\Tests\Attributes\Fixture\Annotation\MethodParameterAnnotation;
-use Spiral\Tests\Attributes\Fixture\Annotation\PropertyAnnotation;
+use Spiral\Tests\Attributes\Reader\Fixture\AnnotatedClass;
+use Spiral\Tests\Attributes\Reader\Fixture\Annotation\ClassAnnotation;
+use Spiral\Tests\Attributes\Reader\Fixture\Annotation\ConstantAnnotation;
+use Spiral\Tests\Attributes\Reader\Fixture\Annotation\FunctionAnnotation;
+use Spiral\Tests\Attributes\Reader\Fixture\Annotation\FunctionParameterAnnotation;
+use Spiral\Tests\Attributes\Reader\Fixture\Annotation\MethodAnnotation;
+use Spiral\Tests\Attributes\Reader\Fixture\Annotation\MethodParameterAnnotation;
+use Spiral\Tests\Attributes\Reader\Fixture\Annotation\PropertyAnnotation;
 use Spiral\Tests\Attributes\Reader\ReaderTestCase;
 
 abstract class ComplexTestCase extends ReaderTestCase
 {
+    /**
+     * @var string
+     */
+    private const FIXTURE_FUNCTION_FQN = '\\Spiral\\Tests\\Attributes\\Reader\\Fixture\\annotated_function';
+
     /**
      * @var int
      */
@@ -171,10 +175,8 @@ abstract class ComplexTestCase extends ReaderTestCase
 
     public function testFunctionMetadataCount(): void
     {
-        $function = '\Spiral\Tests\Attributes\Fixture\annotated_function';
-
         $this->assertCount($this->functionMetadataCount,
-            $this->getFunctionMetadata($function)
+            $this->getFunctionMetadata(self::FIXTURE_FUNCTION_FQN)
         );
     }
 
@@ -188,19 +190,15 @@ abstract class ComplexTestCase extends ReaderTestCase
             $this->expectNotToPerformAssertions();
         }
 
-        $function = '\Spiral\Tests\Attributes\Fixture\annotated_function';
-
-        foreach ($this->getFunctionMetadata($function) as $actual) {
+        foreach ($this->getFunctionMetadata(self::FIXTURE_FUNCTION_FQN) as $actual) {
             $this->assertEquals($expected, $actual);
         }
     }
 
     public function testFunctionParameterMetadataCount(): void
     {
-        $function = '\Spiral\Tests\Attributes\Fixture\annotated_function';
-
         $this->assertCount($this->functionParameterMetadataCount,
-            $this->getFunctionParameterMetadata($function, 'parameter')
+            $this->getFunctionParameterMetadata(self::FIXTURE_FUNCTION_FQN, 'parameter')
         );
     }
 
@@ -214,9 +212,7 @@ abstract class ComplexTestCase extends ReaderTestCase
             $this->expectNotToPerformAssertions();
         }
 
-        $function = '\Spiral\Tests\Attributes\Fixture\annotated_function';
-
-        foreach ($this->getFunctionParameterMetadata($function, 'parameter') as $actual) {
+        foreach ($this->getFunctionParameterMetadata(self::FIXTURE_FUNCTION_FQN, 'parameter') as $actual) {
             $this->assertEquals($expected, $actual);
         }
     }

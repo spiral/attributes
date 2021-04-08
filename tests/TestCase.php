@@ -16,16 +16,6 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
 abstract class TestCase extends BaseTestCase
 {
     /**
-     * @return void
-     */
-    public static function setUpBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-
-        require_once __DIR__ . '/Fixture/function.php';
-    }
-
-    /**
      * @param \Traversable|array $iterable
      * @return array
      */

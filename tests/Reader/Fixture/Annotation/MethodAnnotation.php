@@ -9,10 +9,13 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Tests\Attributes\Fixture\Annotation;
+namespace Spiral\Tests\Attributes\Reader\Fixture\Annotation;
 
-/** @Annotation */
-#[\Attribute(\Attribute::TARGET_PARAMETER)]
-class MethodParameterAnnotation extends Annotation
+/**
+ * @Annotation
+ * @Target({ "METHOD" })
+ */
+#[\Attribute(\Attribute::TARGET_METHOD)]
+class MethodAnnotation extends Annotation
 {
 }

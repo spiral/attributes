@@ -9,10 +9,13 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Tests\Attributes\Fixture\Annotation;
+namespace Spiral\Tests\Attributes\Reader\Fixture\Annotation;
 
-abstract class Annotation
+/**
+ * @Annotation
+ * @Target({ "CLASS" })
+ */
+#[\Attribute(\Attribute::TARGET_CLASS)]
+class ClassAnnotation extends Annotation
 {
-    /** @var string */
-    public $field = '';
 }

@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Tests\Attributes\Fixture;
+namespace Spiral\Tests\Attributes\Reader\Fixture;
 
-use Spiral\Tests\Attributes\Fixture\Annotation\ClassAnnotation;
-use Spiral\Tests\Attributes\Fixture\Annotation\ConstantAnnotation;
-use Spiral\Tests\Attributes\Fixture\Annotation\MethodAnnotation;
-use Spiral\Tests\Attributes\Fixture\Annotation\MethodParameterAnnotation;
-use Spiral\Tests\Attributes\Fixture\Annotation\PropertyAnnotation;
+use Spiral\Tests\Attributes\Reader\Fixture\Annotation\ClassAnnotation;
+use Spiral\Tests\Attributes\Reader\Fixture\Annotation\ConstantAnnotation;
+use Spiral\Tests\Attributes\Reader\Fixture\Annotation\MethodAnnotation;
+use Spiral\Tests\Attributes\Reader\Fixture\Annotation\MethodParameterAnnotation;
+use Spiral\Tests\Attributes\Reader\Fixture\Annotation\PropertyAnnotation;
 
 /** @ClassAnnotation(field="value") */
 #[ClassAnnotation(field: 'value')]

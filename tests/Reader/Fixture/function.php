@@ -9,10 +9,10 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Tests\Attributes\Fixture;
+namespace Spiral\Tests\Attributes\Reader\Fixture;
 
-use Spiral\Tests\Attributes\Fixture\Annotation\FunctionAnnotation;
-use Spiral\Tests\Attributes\Fixture\Annotation\FunctionParameterAnnotation;
+use Spiral\Tests\Attributes\Reader\Fixture\Annotation\FunctionAnnotation;
+use Spiral\Tests\Attributes\Reader\Fixture\Annotation\FunctionParameterAnnotation;
 
 /** @FunctionAnnotation(field="value") */
 #[FunctionAnnotation(field: 'value')]
