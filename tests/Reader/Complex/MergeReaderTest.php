@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Tests\Attributes\Reader;
+namespace Spiral\Tests\Attributes\Reader\Complex;
 
 use Spiral\Attributes\AnnotationReader;
 use Spiral\Attributes\AttributeReader;
@@ -20,7 +20,7 @@ use Spiral\Attributes\ReaderInterface;
  * Count of annotations should be x2 of original values, except non-supported
  * by Doctrine reader ({@see DoctrineReaderTest} for more information).
  */
-class MergeReaderTest extends ReaderTestCase
+class MergeReaderTest extends ComplexTestCase
 {
     protected $classMetadataCount = 2;
     protected $methodMetadataCount = 2;

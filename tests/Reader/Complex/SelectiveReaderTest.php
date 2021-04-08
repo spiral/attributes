@@ -9,14 +9,14 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Tests\Attributes\Reader;
+namespace Spiral\Tests\Attributes\Reader\Complex;
 
 use Spiral\Attributes\AnnotationReader;
 use Spiral\Attributes\AttributeReader;
 use Spiral\Attributes\Composite\SelectiveReader;
 use Spiral\Attributes\ReaderInterface;
 
-class SelectiveReaderTest extends ReaderTestCase
+class SelectiveReaderTest extends ComplexTestCase
 {
     protected function getReader(): ReaderInterface
     {

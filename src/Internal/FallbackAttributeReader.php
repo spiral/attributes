@@ -15,6 +15,8 @@ use PhpParser\Parser;
 use Spiral\Attributes\Internal\FallbackAttributeReader\AttributeParser;
 use Spiral\Attributes\Internal\FallbackAttributeReader\AttributePrototype;
 use Spiral\Attributes\Internal\FallbackAttributeReader\Context;
+use Spiral\Attributes\Internal\Instantiator\Factory;
+use Spiral\Attributes\Internal\Instantiator\InstantiatorInterface;
 
 /**
  * @internal FallbackAttributeReader is an internal library class, please do not use it in your code.
@@ -58,13 +60,14 @@ final class FallbackAttributeReader extends AttributeReader
     private $attributes = [];
 
     /**
+     * @param InstantiatorInterface|null $instantiator
      * @param Parser|null $parser
      */
-    public function __construct(Parser $parser = null)
+    public function __construct(InstantiatorInterface $instantiator = null, Parser $parser = null)
     {
         $this->parser = new AttributeParser($parser);
 
-        parent::__construct();
+        parent::__construct($instantiator ?? new Factory($this));
     }
 
     /**

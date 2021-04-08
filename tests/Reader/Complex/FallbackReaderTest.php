@@ -9,18 +9,15 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Tests\Attributes\Reader;
+namespace Spiral\Tests\Attributes\Reader\Complex;
 
-use Spiral\Attributes\Internal\NativeAttributeReader;
+use Spiral\Attributes\Internal\FallbackAttributeReader;
 use Spiral\Attributes\ReaderInterface;
 
-/**
- * @requires PHP >= 8.0
- */
-class NativeReaderTest extends ReaderTestCase
+class FallbackReaderTest extends ComplexTestCase
 {
     protected function getReader(): ReaderInterface
     {
-        return new NativeAttributeReader();
+        return new FallbackAttributeReader();
     }
 }

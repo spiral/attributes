@@ -33,17 +33,17 @@ abstract class AttributeReader extends Reader
     private $ctx;
 
     /**
-     * AttributeReader constructor.
+     * @param InstantiatorInterface $instantiator
      */
-    public function __construct()
+    public function __construct(InstantiatorInterface $instantiator)
     {
-        $this->instantiator = new Factory();
+        $this->instantiator = $instantiator;
         $this->ctx = new Context();
     }
 
     /**
      * {@inheritDoc}
-     * @throws \ReflectionException
+     * @throws \Throwable
      */
     public function getClassMetadata(\ReflectionClass $class, string $name = null): iterable
     {
@@ -57,7 +57,7 @@ abstract class AttributeReader extends Reader
 
     /**
      * {@inheritDoc}
-     * @throws \ReflectionException
+     * @throws \Throwable
      */
     public function getFunctionMetadata(\ReflectionFunctionAbstract $function, string $name = null): iterable
     {
@@ -71,7 +71,7 @@ abstract class AttributeReader extends Reader
 
     /**
      * {@inheritDoc}
-     * @throws \ReflectionException
+     * @throws \Throwable
      */
     public function getPropertyMetadata(\ReflectionProperty $property, string $name = null): iterable
     {
@@ -85,7 +85,7 @@ abstract class AttributeReader extends Reader
 
     /**
      * {@inheritDoc}
-     * @throws \ReflectionException
+     * @throws \Throwable
      */
     public function getConstantMetadata(\ReflectionClassConstant $constant, string $name = null): iterable
     {
@@ -99,7 +99,7 @@ abstract class AttributeReader extends Reader
 
     /**
      * {@inheritDoc}
-     * @throws \ReflectionException
+     * @throws \Throwable
      */
     public function getParameterMetadata(\ReflectionParameter $parameter, string $name = null): iterable
     {
@@ -151,7 +151,7 @@ abstract class AttributeReader extends Reader
      * @param array $arguments
      * @param string $context
      * @return object
-     * @throws \ReflectionException
+     * @throws \Throwable
      */
     private function instantiate(\ReflectionClass $attribute, array $arguments, string $context): object
     {

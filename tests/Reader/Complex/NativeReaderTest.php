@@ -9,15 +9,18 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Tests\Attributes\Reader;
+namespace Spiral\Tests\Attributes\Reader\Complex;
 
-use Spiral\Attributes\AttributeReader;
+use Spiral\Attributes\Internal\NativeAttributeReader;
 use Spiral\Attributes\ReaderInterface;
 
-class AttributeReaderTest extends ReaderTestCase
+/**
+ * @requires PHP >= 8.0
+ */
+class NativeReaderTest extends ComplexTestCase
 {
     protected function getReader(): ReaderInterface
     {
-        return new AttributeReader();
+        return new NativeAttributeReader();
     }
 }

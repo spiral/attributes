@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file is part of Attributes package.
+ * This file is part of Spiral Framework package.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,9 +11,8 @@ declare(strict_types=1);
 
 namespace Spiral\Attributes\Internal\Instantiator;
 
-use Doctrine\Common\Annotations\NamedArgumentConstructorAnnotation as MarkerAnnotation;
-use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor as MarkerInterface;
-use Spiral\Attributes\AnnotationReader;
+use Doctrine\Common\Annotations\NamedArgumentConstructorAnnotation as MarkerInterface;
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor as MarkerAnnotation;
 use Spiral\Attributes\ReaderInterface;
 
 final class Factory implements InstantiatorInterface
@@ -34,12 +33,11 @@ final class Factory implements InstantiatorInterface
     private $reader;
 
     /**
-     * @param ReaderInterface|null $reader
+     * @param ReaderInterface $reader
      */
-    public function __construct(ReaderInterface $reader = null)
+    public function __construct(ReaderInterface $reader)
     {
-        $this->reader = $reader ?? new AnnotationReader();
-
+        $this->reader = $reader;
         $this->doctrine = new DoctrineInstantiator();
         $this->named = new NamedArgumentsInstantiator();
     }

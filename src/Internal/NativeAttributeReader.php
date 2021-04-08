@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace Spiral\Attributes\Internal;
 
 use Spiral\Attributes\Exception\InitializationException;
+use Spiral\Attributes\Internal\Instantiator\Factory;
+use Spiral\Attributes\Internal\Instantiator\InstantiatorInterface;
 
 /**
  * @internal NativeAttributeReader is an internal library class, please do not use it in your code.
@@ -20,13 +22,13 @@ use Spiral\Attributes\Exception\InitializationException;
 final class NativeAttributeReader extends AttributeReader
 {
     /**
-     * NativeAttributeReader constructor.
+     * @param InstantiatorInterface|null $instantiator
      */
-    public function __construct()
+    public function __construct(InstantiatorInterface $instantiator = null)
     {
         $this->checkAvailability();
 
-        parent::__construct();
+        parent::__construct($instantiator ?? new Factory($this));
     }
 
     /**
