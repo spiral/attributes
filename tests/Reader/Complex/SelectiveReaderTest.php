@@ -16,6 +16,11 @@ use Spiral\Attributes\AttributeReader;
 use Spiral\Attributes\Composite\SelectiveReader;
 use Spiral\Attributes\ReaderInterface;
 
+/**
+ * @group unit
+ * @group reader
+ * @group complex
+ */
 class SelectiveReaderTest extends ComplexTestCase
 {
     protected function getReader(): ReaderInterface

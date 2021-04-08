@@ -19,6 +19,10 @@ use Spiral\Attributes\ReaderInterface;
 /**
  * Count of annotations should be x2 of original values, except non-supported
  * by Doctrine reader ({@see DoctrineReaderTest} for more information).
+ *
+ * @group unit
+ * @group reader
+ * @group complex
  */
 class MergeReaderTest extends ComplexTestCase
 {

@@ -20,6 +20,10 @@ use Spiral\Attributes\ReaderInterface;
  *  - function parameter annotations
  *  - constant annotations
  *  - method parameter annotations
+ *
+ * @group unit
+ * @group reader
+ * @group complex
  */
 class DoctrineReaderTest extends ComplexTestCase
 {

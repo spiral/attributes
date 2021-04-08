@@ -14,6 +14,11 @@ namespace Spiral\Tests\Attributes\Reader\Complex;
 use Spiral\Attributes\Internal\FallbackAttributeReader;
 use Spiral\Attributes\ReaderInterface;
 
+/**
+ * @group unit
+ * @group reader
+ * @group complex
+ */
 class FallbackReaderTest extends ComplexTestCase
 {
     protected function getReader(): ReaderInterface

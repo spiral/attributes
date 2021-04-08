@@ -13,6 +13,9 @@ namespace Spiral\Tests\Attributes;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
+/**
+ * @group unit
+ */
 abstract class TestCase extends BaseTestCase
 {
     /**

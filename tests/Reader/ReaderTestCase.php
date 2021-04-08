@@ -14,6 +14,10 @@ namespace Spiral\Tests\Attributes\Reader;
 use Spiral\Tests\Attributes\Concerns\InteractWithMetadata;
 use Spiral\Tests\Attributes\TestCase;
 
+/**
+ * @group unit
+ * @group reader
+ */
 abstract class ReaderTestCase extends TestCase
 {
     use InteractWithMetadata;

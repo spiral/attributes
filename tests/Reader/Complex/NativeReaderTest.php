@@ -16,6 +16,10 @@ use Spiral\Attributes\ReaderInterface;
 
 /**
  * @requires PHP >= 8.0
+ *
+ * @group unit
+ * @group reader
+ * @group complex
  */
 class NativeReaderTest extends ComplexTestCase
 {

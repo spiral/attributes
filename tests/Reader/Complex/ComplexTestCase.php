@@ -21,6 +21,11 @@ use Spiral\Tests\Attributes\Reader\Fixture\Annotation\MethodParameterAnnotation;
 use Spiral\Tests\Attributes\Reader\Fixture\Annotation\PropertyAnnotation;
 use Spiral\Tests\Attributes\Reader\ReaderTestCase;
 
+/**
+ * @group unit
+ * @group reader
+ * @group complex
+ */
 abstract class ComplexTestCase extends ReaderTestCase
 {
     /**
