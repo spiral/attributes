@@ -123,7 +123,7 @@ namespace {
             /**
              * @var AttributeFlag
              */
-            public int $flags;
+            public $flags;
 
             /**
              * @param int-mask-of<AttributeFlag> $flags A value in the form of
