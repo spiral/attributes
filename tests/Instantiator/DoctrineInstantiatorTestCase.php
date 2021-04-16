@@ -51,6 +51,6 @@ class DoctrineInstantiatorTestCase extends InstantiatorTestCase
 
         $this->assertSame(23, $object->a);
         $this->assertSame(42, $object->b);
-        $this->assertSame(null, $object->c);
+        $this->assertNull($object->c);
     }
 }

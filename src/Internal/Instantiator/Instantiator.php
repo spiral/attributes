@@ -21,7 +21,7 @@ abstract class Instantiator implements InstantiatorInterface
     /**
      * @var ContextRenderer
      */
-    protected ContextRenderer $renderer;
+    protected $renderer;
 
     /**
      * Instantiator constructor.
