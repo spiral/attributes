@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Spiral\Tests\Attributes\Reader;
 
 use Spiral\Attributes\Internal\FallbackAttributeReader;
+use Spiral\Attributes\Internal\Instantiator\Facade;
 use Spiral\Attributes\ReaderInterface;
 
 /**
@@ -22,6 +23,6 @@ class FallbackReaderTestCase extends ComplexTestCase
 {
     protected function getReader(): ReaderInterface
     {
-        return new FallbackAttributeReader();
+        return new FallbackAttributeReader(new Facade());
     }
 }

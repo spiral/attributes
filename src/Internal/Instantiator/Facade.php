@@ -17,7 +17,7 @@ use Spiral\Attributes\AttributeReader;
 use Spiral\Attributes\NamedArgumentConstructor;
 use Spiral\Attributes\ReaderInterface;
 
-final class Factory implements InstantiatorInterface
+final class Facade implements InstantiatorInterface
 {
     /**
      * @var DoctrineInstantiator

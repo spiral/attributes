@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Spiral\Attributes\Internal;
 
 use Spiral\Attributes\Exception\InitializationException;
-use Spiral\Attributes\Internal\Instantiator\Factory;
+use Spiral\Attributes\Internal\Instantiator\Facade;
 use Spiral\Attributes\Internal\Instantiator\InstantiatorInterface;
 
 /**
@@ -22,13 +22,13 @@ use Spiral\Attributes\Internal\Instantiator\InstantiatorInterface;
 final class NativeAttributeReader extends AttributeReader
 {
     /**
-     * @param InstantiatorInterface|null $instantiator
+     * @param InstantiatorInterface $instantiator
      */
-    public function __construct(InstantiatorInterface $instantiator = null)
+    public function __construct(InstantiatorInterface $instantiator)
     {
         $this->checkAvailability();
 
-        parent::__construct($instantiator ?? new Factory());
+        parent::__construct($instantiator);
     }
 
     /**

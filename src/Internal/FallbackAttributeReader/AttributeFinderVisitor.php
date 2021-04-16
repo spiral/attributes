@@ -191,23 +191,39 @@ final class AttributeFinderVisitor extends NodeVisitorAbstract
     /**
      * @param Node $node
      */
-    public function leaveNode(Node $node): void
+    private function updateContext(Node $node): void
     {
-        if ($node instanceof Node\Stmt\Namespace_) {
-            $this->context[AttributeParser::CTX_NAMESPACE] = '';
-            return;
+        switch (true) {
+            case $node instanceof Node\Stmt\Namespace_:
+                $this->context[AttributeParser::CTX_NAMESPACE] = $this->name($node->name);
+                break;
+
+            case $node instanceof Node\Stmt\ClassLike:
+                $this->context[AttributeParser::CTX_CLASS] = $this->name($node->name);
+
+            // no break
+            case $node instanceof Node\Stmt\Trait_:
+                $this->context[AttributeParser::CTX_TRAIT] = $this->name($node->name);
+                break;
+
+            case $node instanceof Node\Stmt\Function_:
+            case $node instanceof Node\Stmt\ClassMethod:
+                $this->context[AttributeParser::CTX_FUNCTION] = $this->name($node->name);
+                break;
+        }
+    }
+
+    /**
+     * @param Node\Name|Node\Identifier|null $name
+     * @return string
+     */
+    private function name($name): string
+    {
+        if ($name === null) {
+            return '';
         }
 
-        if ($node instanceof Node\Stmt\ClassLike) {
-            $this->context[AttributeParser::CTX_CLASS] = '';
-            $this->context[AttributeParser::CTX_TRAIT] = '';
-            return;
-        }
-
-        if ($node instanceof Node\FunctionLike) {
-            $this->context[AttributeParser::CTX_FUNCTION] = '';
-            return;
-        }
+        return $name->toString();
     }
 
     /**
@@ -232,40 +248,41 @@ final class AttributeFinderVisitor extends NodeVisitorAbstract
     }
 
     /**
-     * @param Node\Name|Node\Identifier|null $name
-     * @return string
+     * @param Node $node
      */
-    private function name($name): string
+    public function leaveNode(Node $node): void
     {
-        if ($name === null) {
-            return '';
+        if ($node instanceof Node\Stmt\Namespace_) {
+            $this->context[AttributeParser::CTX_NAMESPACE] = '';
+
+            return;
         }
 
-        return $name->toString();
+        if ($node instanceof Node\Stmt\ClassLike) {
+            $this->context[AttributeParser::CTX_CLASS] = '';
+            $this->context[AttributeParser::CTX_TRAIT] = '';
+
+            return;
+        }
+
+        if ($node instanceof Node\FunctionLike) {
+            $this->context[AttributeParser::CTX_FUNCTION] = '';
+
+            return;
+        }
     }
 
     /**
-     * @param Node $node
+     * @return array
      */
-    private function updateContext(Node $node): void
+    public function __debugInfo(): array
     {
-        switch (true) {
-            case $node instanceof Node\Stmt\Namespace_:
-                $this->context[AttributeParser::CTX_NAMESPACE] = $this->name($node->name);
-                break;
-
-            case $node instanceof Node\Stmt\ClassLike:
-                $this->context[AttributeParser::CTX_CLASS] = $this->name($node->name);
-
-                // no break
-            case $node instanceof Node\Stmt\Trait_:
-                $this->context[AttributeParser::CTX_TRAIT] = $this->name($node->name);
-                break;
-
-            case $node instanceof Node\Stmt\Function_:
-            case $node instanceof Node\Stmt\ClassMethod:
-                $this->context[AttributeParser::CTX_FUNCTION] = $this->name($node->name);
-                break;
-        }
+        return [
+            'classes'    => $this->classes,
+            'functions'  => $this->functions,
+            'constants'  => $this->constants,
+            'properties' => $this->properties,
+            'parameters' => $this->parameters,
+        ];
     }
 }
