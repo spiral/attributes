@@ -50,13 +50,9 @@ final class DoctrineInstantiator extends Instantiator
     private const DEFAULT_PROPERTY_NAME = 'value';
 
     /**
-     * @param \ReflectionClass $attr
-     * @param array $arguments
-     * @param string $context
-     * @return object
-     * @throws \ReflectionException
+     * {@inheritDoc}
      */
-    public function instantiate(\ReflectionClass $attr, array $arguments, string $context): object
+    public function instantiate(\ReflectionClass $attr, array $arguments, \Reflector $context = null): object
     {
         $arguments = $this->formatArguments($arguments);
 
@@ -125,13 +121,15 @@ final class DoctrineInstantiator extends Instantiator
     /**
      * @param \ReflectionClass $attr
      * @param string $name
-     * @param string $context
+     * @param \Reflector|null $context
      * @return AttributeException
      */
-    private function propertyNotFound(\ReflectionClass $attr, string $name, string $context): AttributeException
+    private function propertyNotFound(\ReflectionClass $attr, string $name, ?\Reflector $context): AttributeException
     {
         $available = $this->getAvailablePropertiesString($attr);
-        $message = \sprintf(self::ERROR_INVALID_PROPERTY, $attr->getName(), $context, $name, $available);
+
+        $target = $this->renderer->render($context);
+        $message = \sprintf(self::ERROR_INVALID_PROPERTY, $attr->getName(), $target, $name, $available);
 
         return AttributeException::creationError($message);
     }

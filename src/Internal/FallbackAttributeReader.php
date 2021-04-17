@@ -14,8 +14,6 @@ namespace Spiral\Attributes\Internal;
 use PhpParser\Parser;
 use Spiral\Attributes\Internal\FallbackAttributeReader\AttributeParser;
 use Spiral\Attributes\Internal\FallbackAttributeReader\AttributePrototype;
-use Spiral\Attributes\Internal\FallbackAttributeReader\Context;
-use Spiral\Attributes\Internal\Instantiator\Factory;
 use Spiral\Attributes\Internal\Instantiator\InstantiatorInterface;
 
 /**
@@ -32,17 +30,17 @@ final class FallbackAttributeReader extends AttributeReader
     /**
      * @var int
      */
-    private const KEY_FUNCTIONS = 0x01;
+    private const KEY_CONSTANTS = 0x01;
 
     /**
      * @var int
      */
-    private const KEY_CONSTANTS = 0x02;
+    private const KEY_PROPERTIES = 0x02;
 
     /**
      * @var int
      */
-    private const KEY_PROPERTIES = 0x03;
+    private const KEY_FUNCTIONS = 0x03;
 
     /**
      * @var int
@@ -55,19 +53,40 @@ final class FallbackAttributeReader extends AttributeReader
     private $parser;
 
     /**
-     * @var array
+     * @psalm-type ClassName       = string
+     * @psalm-type ConstantName    = string
+     * @psalm-type PropertyName    = string
+     * @psalm-type ParameterName   = string
+     *
+     * @psalm-type FunctionEndLine = positive-int
+     *
+     * @psalm-type AttributesList  = array<AttributePrototype>
+     *
+     * @var non-empty-array {
+     *  0: array<ClassName, AttributesList>,
+     *  1: array<ClassName, array<ConstantName, AttributesList>>,
+     *  2: array<ClassName, array<PropertyName, AttributesList>>,
+     *  3: array<FunctionEndLine, AttributesList>,
+     *  4: array<FunctionEndLine, array<ParameterName, AttributesList>>
+     * }
      */
-    private $attributes = [];
+    private $attributes = [
+        self::KEY_CLASSES    => [],
+        self::KEY_CONSTANTS  => [],
+        self::KEY_PROPERTIES => [],
+        self::KEY_FUNCTIONS  => [],
+        self::KEY_PARAMETERS => [],
+    ];
 
     /**
-     * @param InstantiatorInterface|null $instantiator
+     * @param InstantiatorInterface $instantiator
      * @param Parser|null $parser
      */
-    public function __construct(InstantiatorInterface $instantiator = null, Parser $parser = null)
+    public function __construct(InstantiatorInterface $instantiator, Parser $parser = null)
     {
         $this->parser = new AttributeParser($parser);
 
-        parent::__construct($instantiator ?? new Factory($this));
+        parent::__construct($instantiator);
     }
 
     /**
@@ -87,6 +106,46 @@ final class FallbackAttributeReader extends AttributeReader
     }
 
     /**
+     * @psalm-type Context = FallbackAttributeReader::KEY_*
+     *
+     * @param string $file
+     * @param Context $context
+     * @return array
+     */
+    private function parseAttributes(string $file, int $context): array
+    {
+        if (! isset($this->attributes[$file])) {
+            $found = $this->parser->parse($file);
+
+            $this->attributes[$file] = [
+                self::KEY_CLASSES    => $found->getClasses(),
+                self::KEY_FUNCTIONS  => $found->getFunctions(),
+                self::KEY_CONSTANTS  => $found->getConstants(),
+                self::KEY_PROPERTIES => $found->getProperties(),
+                self::KEY_PARAMETERS => $found->getParameters(),
+            ];
+        }
+
+        return $this->attributes[$file][$context];
+    }
+
+    /**
+     * @param AttributePrototype[] $attributes
+     * @param class-string|null $name
+     * @return iterable<\ReflectionClass, array>
+     */
+    private function format(iterable $attributes, ?string $name): iterable
+    {
+        foreach ($attributes as $prototype) {
+            if ($name !== null && ! \is_subclass_of($prototype->name, $name) && $prototype->name !== $name) {
+                continue;
+            }
+
+            yield new \ReflectionClass($prototype->name) => $prototype->params;
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     protected function getFunctionAttributes(\ReflectionFunctionAbstract $function, ?string $name): iterable
@@ -100,58 +159,6 @@ final class FallbackAttributeReader extends AttributeReader
         $attributes = $this->extractFunctionAttributes($attributes, $function);
 
         return $this->format($attributes, $name);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function getPropertyAttributes(\ReflectionProperty $property, ?string $name): iterable
-    {
-        $class = $property->getDeclaringClass();
-
-        // Can not parse property of internal class
-        if ($class->isInternal()) {
-            return [];
-        }
-
-        $attributes = $this->parseAttributes($class->getFileName(), self::KEY_PROPERTIES);
-
-        return $this->format($attributes[$class->getName()][$property->getName()] ?? [], $name);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function getConstantAttributes(\ReflectionClassConstant $const, ?string $name): iterable
-    {
-        $class = $const->getDeclaringClass();
-
-        // Can not parse internal classes
-        if ($class->isInternal()) {
-            return [];
-        }
-
-        $attributes = $this->parseAttributes($class->getFileName(), self::KEY_CONSTANTS);
-
-        return $this->format($attributes[$class->getName()][$const->getName()] ?? [], $name);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function getParameterAttributes(\ReflectionParameter $param, ?string $name): iterable
-    {
-        $function = $param->getDeclaringFunction();
-
-        // Can not parse parameter of internal function
-        if ($function->isInternal()) {
-            return [];
-        }
-
-        $attributes = $this->parseAttributes($function->getFileName(), self::KEY_PARAMETERS);
-        $attributes = $this->extractFunctionAttributes($attributes, $function);
-
-        return $this->format($attributes[$param->getName()] ?? [], $name);
     }
 
     /**
@@ -221,42 +228,54 @@ final class FallbackAttributeReader extends AttributeReader
     }
 
     /**
-     * @param AttributePrototype[] $attributes
-     * @param class-string|null $name
-     * @return iterable<\ReflectionClass, array>
+     * {@inheritDoc}
      */
-    private function format(iterable $attributes, ?string $name): iterable
+    protected function getPropertyAttributes(\ReflectionProperty $property, ?string $name): iterable
     {
-        foreach ($attributes as $prototype) {
-            if ($name !== null && !\is_subclass_of($prototype->name, $name) && $prototype->name !== $name) {
-                continue;
-            }
+        $class = $property->getDeclaringClass();
 
-            yield new \ReflectionClass($prototype->name) => $prototype->params;
+        // Can not parse property of internal class
+        if ($class->isInternal()) {
+            return [];
         }
+
+        $attributes = $this->parseAttributes($class->getFileName(), self::KEY_PROPERTIES);
+
+        return $this->format($attributes[$class->getName()][$property->getName()] ?? [], $name);
     }
 
     /**
-     * @psalm-type Context = FallbackAttributeReader::KEY_*
-     *
-     * @param string $file
-     * @param Context $context
-     * @return array
+     * {@inheritDoc}
      */
-    private function parseAttributes(string $file, int $context): array
+    protected function getConstantAttributes(\ReflectionClassConstant $const, ?string $name): iterable
     {
-        if (!isset($this->attributes[$file])) {
-            $found = $this->parser->parse($file);
+        $class = $const->getDeclaringClass();
 
-            $this->attributes[$file] = [
-                self::KEY_CLASSES    => $found->getClasses(),
-                self::KEY_FUNCTIONS  => $found->getFunctions(),
-                self::KEY_CONSTANTS  => $found->getConstants(),
-                self::KEY_PROPERTIES => $found->getProperties(),
-                self::KEY_PARAMETERS => $found->getParameters(),
-            ];
+        // Can not parse internal classes
+        if ($class->isInternal()) {
+            return [];
         }
 
-        return $this->attributes[$file][$context];
+        $attributes = $this->parseAttributes($class->getFileName(), self::KEY_CONSTANTS);
+
+        return $this->format($attributes[$class->getName()][$const->getName()] ?? [], $name);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function getParameterAttributes(\ReflectionParameter $param, ?string $name): iterable
+    {
+        $function = $param->getDeclaringFunction();
+
+        // Can not parse parameter of internal function
+        if ($function->isInternal()) {
+            return [];
+        }
+
+        $attributes = $this->parseAttributes($function->getFileName(), self::KEY_PARAMETERS);
+        $attributes = $this->extractFunctionAttributes($attributes, $function);
+
+        return $this->format($attributes[$param->getName()] ?? [], $name);
     }
 }

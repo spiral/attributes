@@ -9,20 +9,19 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Tests\Attributes\Reader\Complex;
+namespace Spiral\Tests\Attributes\Reader;
 
-use Spiral\Attributes\Internal\FallbackAttributeReader;
+use Spiral\Attributes\AttributeReader;
 use Spiral\Attributes\ReaderInterface;
 
 /**
  * @group unit
  * @group reader
- * @group complex
  */
-class FallbackReaderTest extends ComplexTestCase
+class AttributeReaderTestCase extends ComplexTestCase
 {
     protected function getReader(): ReaderInterface
     {
-        return new FallbackAttributeReader();
+        return new AttributeReader();
     }
 }

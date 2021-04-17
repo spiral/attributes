@@ -115,24 +115,4 @@ final class DoctrineAnnotationReader extends BaseReader
 
         throw new InitializationException('Requires the "doctrine/annotations" package');
     }
-
-    /**
-     * @param string|null       $name
-     * @param iterable|object[] $annotations
-     * @return object[]
-     */
-    private function filter(?string $name, iterable $annotations): iterable
-    {
-        if ($name === null) {
-            yield from $annotations;
-
-            return;
-        }
-
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof $name) {
-                yield $annotation;
-            }
-        }
-    }
 }

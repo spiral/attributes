@@ -13,9 +13,11 @@ namespace Spiral\Attributes\Internal\Instantiator;
 
 use Doctrine\Common\Annotations\NamedArgumentConstructorAnnotation as MarkerInterface;
 use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor as MarkerAnnotation;
+use Spiral\Attributes\AttributeReader;
+use Spiral\Attributes\NamedArgumentConstructor;
 use Spiral\Attributes\ReaderInterface;
 
-final class Factory implements InstantiatorInterface
+final class Facade implements InstantiatorInterface
 {
     /**
      * @var DoctrineInstantiator
@@ -33,23 +35,19 @@ final class Factory implements InstantiatorInterface
     private $reader;
 
     /**
-     * @param ReaderInterface $reader
+     * @param ReaderInterface|null $reader
      */
-    public function __construct(ReaderInterface $reader)
+    public function __construct(ReaderInterface $reader = null)
     {
-        $this->reader = $reader;
+        $this->reader = $reader ?? new AttributeReader($this);
         $this->doctrine = new DoctrineInstantiator();
         $this->named = new NamedArgumentsInstantiator();
     }
 
     /**
-     * @param \ReflectionClass $attr
-     * @param array $arguments
-     * @param string $context
-     * @return object
-     * @throws \Throwable
+     * {@inheritDoc}
      */
-    public function instantiate(\ReflectionClass $attr, array $arguments, string $context): object
+    public function instantiate(\ReflectionClass $attr, array $arguments, \Reflector $context = null): object
     {
         if ($this->isNamedArguments($attr)) {
             return $this->named->instantiate($attr, $arguments, $context);
@@ -79,7 +77,7 @@ final class Factory implements InstantiatorInterface
             return $this->reader->firstClassMetadata($class, MarkerAnnotation::class) !== null;
         }
 
-        return false;
+        return $this->reader->firstClassMetadata($class, NamedArgumentConstructor::class);
     }
 
     /**

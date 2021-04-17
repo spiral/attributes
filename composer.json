@@ -16,11 +16,15 @@
     ],
     "require": {
         "php": ">=7.2",
+        "psr/cache": ">=1.0",
+        "psr/simple-cache": ">=1.0",
         "nikic/php-parser": "^4.10"
     },
     "require-dev": {
+        "vimeo/psalm": "^4.7",
         "doctrine/annotations": "^1.10",
         "jetbrains/phpstorm-attributes": "^1.0",
+        "cache/filesystem-adapter": "^1.1|^2.0",
         "symfony/var-dumper": "^5.2",
         "phpunit/phpunit": "^8.5|^9.0"
     },
@@ -41,6 +45,11 @@
         "branch-alias": {
             "dev-master": "2.7.x-dev"
         }
+    },
+    "scripts": {
+        "analyze": [
+            "psalm --no-cache"
+        ]
     },
     "suggest": {
         "doctrine/annotations": "^1.0 for Doctrine metadata driver support"

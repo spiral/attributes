@@ -30,13 +30,9 @@ final class NamedArgumentsInstantiator extends Instantiator
     private const ERROR_UNKNOWN_ARGUMENT = 'Unknown named parameter $%s';
 
     /**
-     * @param \ReflectionClass $attr
-     * @param array $arguments
-     * @param string $context
-     * @return object
-     * @throws \Throwable
+     * {@inheritDoc}
      */
-    public function instantiate(\ReflectionClass $attr, array $arguments, string $context): object
+    public function instantiate(\ReflectionClass $attr, array $arguments, \Reflector $context = null): object
     {
         if ($this->isNamedArgumentsSupported()) {
             try {
@@ -108,7 +104,7 @@ final class NamedArgumentsInstantiator extends Instantiator
                 } finally {
                     unset($arguments[$param->getName()]);
                 }
-            // no actual falling through
+                // no actual falling through
 
             case \array_key_exists($param->getPosition(), $arguments):
                 try {
@@ -116,7 +112,7 @@ final class NamedArgumentsInstantiator extends Instantiator
                 } finally {
                     unset($arguments[$param->getPosition()]);
                 }
-            // no actual falling through
+                // no actual falling through
 
             case $param->isDefaultValueAvailable():
                 return $param->getDefaultValue();
