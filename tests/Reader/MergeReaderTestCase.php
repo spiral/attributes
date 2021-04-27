@@ -23,7 +23,7 @@ use Spiral\Attributes\ReaderInterface;
  * @group unit
  * @group reader
  */
-class MergeReaderTestCase extends ComplexTestCase
+class MergeReaderTestCase extends CompositeReaderTestCase
 {
     protected $classMetadataCount = 2;
     protected $methodMetadataCount = 2;

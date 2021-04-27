@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\Attributes\Reader;
 
+use Spiral\Attributes\Exception\SemanticAttributeException;
 use Spiral\Tests\Attributes\Concerns\InteractWithMetadata;
 use Spiral\Tests\Attributes\Reader\Fixture\AnnotatedClass;
 use Spiral\Tests\Attributes\Reader\Fixture\Annotation\ClassAnnotation;
@@ -20,13 +21,14 @@ use Spiral\Tests\Attributes\Reader\Fixture\Annotation\FunctionParameterAnnotatio
 use Spiral\Tests\Attributes\Reader\Fixture\Annotation\MethodAnnotation;
 use Spiral\Tests\Attributes\Reader\Fixture\Annotation\MethodParameterAnnotation;
 use Spiral\Tests\Attributes\Reader\Fixture\Annotation\PropertyAnnotation;
+use Spiral\Tests\Attributes\Reader\Fixture\UndefinedMeta;
 use Spiral\Tests\Attributes\TestCase;
 
 /**
  * @group unit
  * @group reader
  */
-abstract class ComplexTestCase extends TestCase
+abstract class ReaderTestCase extends TestCase
 {
     use InteractWithMetadata;
 
@@ -75,6 +77,16 @@ abstract class ComplexTestCase extends TestCase
         parent::setUpBeforeClass();
 
         require_once __DIR__ . '/Fixture/function.php';
+        require_once __DIR__ . '/Fixture/UndefinedMeta.php';
+    }
+
+    /**
+     * @param string $suffix
+     * @return string
+     */
+    protected function fixture(string $suffix): string
+    {
+        return '\\Spiral\\Tests\\Attributes\\Reader\\Fixture\\' . \trim($suffix, '\\');
     }
 
     public function testClassMetadataCount(): void
@@ -190,7 +202,7 @@ abstract class ComplexTestCase extends TestCase
     public function testFunctionMetadataCount(): void
     {
         $this->assertCount($this->functionMetadataCount,
-            $this->getFunctionMetadata(self::FIXTURE_FUNCTION_FQN)
+            $this->getFunctionMetadata($this->fixture('annotated_function'))
         );
     }
 
@@ -204,7 +216,7 @@ abstract class ComplexTestCase extends TestCase
             $this->expectNotToPerformAssertions();
         }
 
-        foreach ($this->getFunctionMetadata(self::FIXTURE_FUNCTION_FQN) as $actual) {
+        foreach ($this->getFunctionMetadata($this->fixture('annotated_function')) as $actual) {
             $this->assertEquals($expected, $actual);
         }
     }
@@ -212,7 +224,7 @@ abstract class ComplexTestCase extends TestCase
     public function testFunctionParameterMetadataCount(): void
     {
         $this->assertCount($this->functionParameterMetadataCount,
-            $this->getFunctionParameterMetadata(self::FIXTURE_FUNCTION_FQN, 'parameter')
+            $this->getFunctionParameterMetadata($this->fixture('annotated_function'), 'parameter')
         );
     }
 
@@ -226,7 +238,8 @@ abstract class ComplexTestCase extends TestCase
             $this->expectNotToPerformAssertions();
         }
 
-        foreach ($this->getFunctionParameterMetadata(self::FIXTURE_FUNCTION_FQN, 'parameter') as $actual) {
+        $function = $this->fixture('annotated_function');
+        foreach ($this->getFunctionParameterMetadata($function, 'parameter') as $actual) {
             $this->assertEquals($expected, $actual);
         }
     }

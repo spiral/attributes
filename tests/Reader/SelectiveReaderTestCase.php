@@ -20,7 +20,7 @@ use Spiral\Attributes\ReaderInterface;
  * @group unit
  * @group reader
  */
-class SelectiveReaderTestCase extends ComplexTestCase
+class SelectiveReaderTestCase extends CompositeReaderTestCase
 {
     protected function getReader(): ReaderInterface
     {

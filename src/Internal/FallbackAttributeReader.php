@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Spiral\Attributes\Internal;
 
 use PhpParser\Parser;
+use Spiral\Attributes\Exception\AttributeException;
 use Spiral\Attributes\Internal\FallbackAttributeReader\AttributeParser;
 use Spiral\Attributes\Internal\FallbackAttributeReader\AttributePrototype;
 use Spiral\Attributes\Internal\Instantiator\InstantiatorInterface;
@@ -79,10 +80,10 @@ final class FallbackAttributeReader extends AttributeReader
     ];
 
     /**
-     * @param InstantiatorInterface $instantiator
+     * @param InstantiatorInterface|null $instantiator
      * @param Parser|null $parser
      */
-    public function __construct(InstantiatorInterface $instantiator, Parser $parser = null)
+    public function __construct(InstantiatorInterface $instantiator = null, Parser $parser = null)
     {
         $this->parser = new AttributeParser($parser);
 
@@ -102,7 +103,7 @@ final class FallbackAttributeReader extends AttributeReader
 
         $attributes = $this->parseAttributes($class->getFileName(), self::KEY_CLASSES);
 
-        return $this->format($attributes[$class->getName()] ?? [], $name);
+        return $this->format($attributes[$class->getName()] ?? [], $name, $class);
     }
 
     /**
@@ -134,12 +135,14 @@ final class FallbackAttributeReader extends AttributeReader
      * @param class-string|null $name
      * @return iterable<\ReflectionClass, array>
      */
-    private function format(iterable $attributes, ?string $name): iterable
+    private function format(iterable $attributes, ?string $name, \Reflector $context): iterable
     {
         foreach ($attributes as $prototype) {
-            if ($name !== null && ! \is_subclass_of($prototype->name, $name) && $prototype->name !== $name) {
+            if ($prototype->name !== $name && $name !== null && ! \is_subclass_of($prototype->name, $name)) {
                 continue;
             }
+
+            $this->assertClassExists($prototype->name, $context);
 
             yield new \ReflectionClass($prototype->name) => $prototype->params;
         }
@@ -158,7 +161,7 @@ final class FallbackAttributeReader extends AttributeReader
         $attributes = $this->parseAttributes($function->getFileName(), self::KEY_FUNCTIONS);
         $attributes = $this->extractFunctionAttributes($attributes, $function);
 
-        return $this->format($attributes, $name);
+        return $this->format($attributes, $name, $function);
     }
 
     /**
@@ -241,7 +244,7 @@ final class FallbackAttributeReader extends AttributeReader
 
         $attributes = $this->parseAttributes($class->getFileName(), self::KEY_PROPERTIES);
 
-        return $this->format($attributes[$class->getName()][$property->getName()] ?? [], $name);
+        return $this->format($attributes[$class->getName()][$property->getName()] ?? [], $name, $property);
     }
 
     /**
@@ -258,7 +261,7 @@ final class FallbackAttributeReader extends AttributeReader
 
         $attributes = $this->parseAttributes($class->getFileName(), self::KEY_CONSTANTS);
 
-        return $this->format($attributes[$class->getName()][$const->getName()] ?? [], $name);
+        return $this->format($attributes[$class->getName()][$const->getName()] ?? [], $name, $const);
     }
 
     /**
@@ -276,6 +279,6 @@ final class FallbackAttributeReader extends AttributeReader
         $attributes = $this->parseAttributes($function->getFileName(), self::KEY_PARAMETERS);
         $attributes = $this->extractFunctionAttributes($attributes, $function);
 
-        return $this->format($attributes[$param->getName()] ?? [], $name);
+        return $this->format($attributes[$param->getName()] ?? [], $name, $param);
     }
 }

@@ -14,6 +14,8 @@ namespace Spiral\Attributes\Internal\Instantiator;
 use JetBrains\PhpStorm\Pure;
 use Doctrine\Common\Annotations\DocParser;
 use Spiral\Attributes\Exception\AttributeException;
+use Spiral\Attributes\Exception\SemanticAttributeException;
+use Spiral\Attributes\Exception\SyntaxAttributeException;
 
 /**
  * @internal DoctrineInstantiator is an internal library class, please do not use it in your code.
@@ -115,7 +117,7 @@ final class DoctrineInstantiator extends Instantiator
         $value = \is_scalar($value) ? \var_export($value, true) : \get_debug_type($value);
         $message = \sprintf(self::ERROR_INVALID_ARGUMENT, self::DEFAULT_PROPERTY_NAME, $value);
 
-        throw AttributeException::syntaxError($message);
+        throw new SyntaxAttributeException($message);
     }
 
     /**
@@ -131,7 +133,7 @@ final class DoctrineInstantiator extends Instantiator
         $target = $this->renderer->render($context);
         $message = \sprintf(self::ERROR_INVALID_PROPERTY, $attr->getName(), $target, $name, $available);
 
-        return AttributeException::creationError($message);
+        return new SemanticAttributeException($message);
     }
 
     /**

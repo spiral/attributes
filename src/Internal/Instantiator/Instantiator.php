@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace Spiral\Attributes\Internal\Instantiator;
 
+use Spiral\Attributes\Internal\ContextRenderer;
+
 abstract class Instantiator implements InstantiatorInterface
 {
     /**

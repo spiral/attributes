@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Attributes\Internal\Instantiator;
+namespace Spiral\Attributes\Internal;
 
 /**
  * @internal Context is an internal library class, please do not use it in your code.

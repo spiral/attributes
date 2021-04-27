@@ -19,7 +19,7 @@ use Spiral\Attributes\ReaderInterface;
  * @group unit
  * @group reader
  */
-class FallbackReaderTestCase extends ComplexTestCase
+class FallbackReaderTestCase extends ReaderTestCase
 {
     protected function getReader(): ReaderInterface
     {

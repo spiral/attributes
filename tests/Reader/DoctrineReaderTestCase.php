@@ -24,7 +24,7 @@ use Spiral\Attributes\ReaderInterface;
  * @group unit
  * @group reader
  */
-class DoctrineReaderTestCase extends ComplexTestCase
+class DoctrineReaderTestCase extends ReaderTestCase
 {
     protected $functionMetadataCount = 0;
     protected $functionParameterMetadataCount = 0;

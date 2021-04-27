@@ -11,10 +11,14 @@ declare(strict_types=1);
 
 namespace Spiral\Attributes\Internal;
 
+use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationReader as DoctrineReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\Reader;
+use Spiral\Attributes\Exception\AttributeException;
 use Spiral\Attributes\Exception\InitializationException;
+use Spiral\Attributes\Exception\SemanticAttributeException;
+use Spiral\Attributes\Exception\SyntaxAttributeException;
 use Spiral\Attributes\Reader as BaseReader;
 
 final class DoctrineAnnotationReader extends BaseReader
@@ -40,7 +44,9 @@ final class DoctrineAnnotationReader extends BaseReader
      */
     public function getClassMetadata(\ReflectionClass $class, string $name = null): iterable
     {
-        $result = $this->reader->getClassAnnotations($class);
+        $result = $this->wrapDoctrineExceptions(function () use ($class) {
+            return $this->reader->getClassAnnotations($class);
+        });
 
         return $this->filter($name, $result);
     }
@@ -51,7 +57,9 @@ final class DoctrineAnnotationReader extends BaseReader
     public function getFunctionMetadata(\ReflectionFunctionAbstract $function, string $name = null): iterable
     {
         if ($function instanceof \ReflectionMethod) {
-            $result = $this->reader->getMethodAnnotations($function);
+            $result = $this->wrapDoctrineExceptions(function () use ($function) {
+                return $this->reader->getMethodAnnotations($function);
+            });
 
             return $this->filter($name, $result);
         }
@@ -64,9 +72,35 @@ final class DoctrineAnnotationReader extends BaseReader
      */
     public function getPropertyMetadata(\ReflectionProperty $property, string $name = null): iterable
     {
-        $result = $this->reader->getPropertyAnnotations($property);
+        $result = $this->wrapDoctrineExceptions(function () use ($property) {
+            return $this->reader->getPropertyAnnotations($property);
+        });
 
         return $this->filter($name, $result);
+    }
+
+    private function wrapDoctrineExceptions(\Closure $then): iterable
+    {
+        try {
+            return $then();
+        } catch (AnnotationException $e) {
+            switch (true) {
+                case \str_starts_with($e->getMessage(), '[Syntax Error]'):
+                case \str_starts_with($e->getMessage(), '[Type Error]'):
+                    $class = SyntaxAttributeException::class;
+                    break;
+
+                case \str_starts_with($e->getMessage(), '[Semantical Error]'):
+                case \str_starts_with($e->getMessage(), '[Creation Error]'):
+                    $class = SemanticAttributeException::class;
+                    break;
+
+                default:
+                    $class = AttributeException::class;
+            }
+
+            throw new $class($e->getMessage(), (int)$e->getCode(), $e);
+        }
     }
 
     /**

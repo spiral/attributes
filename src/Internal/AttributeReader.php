@@ -11,6 +11,9 @@ declare(strict_types=1);
 
 namespace Spiral\Attributes\Internal;
 
+use Spiral\Attributes\Exception\AttributeException;
+use Spiral\Attributes\Exception\SemanticAttributeException;
+use Spiral\Attributes\Internal\Instantiator\Facade;
 use Spiral\Attributes\Internal\Instantiator\InstantiatorInterface;
 use Spiral\Attributes\Reader;
 
@@ -26,11 +29,33 @@ abstract class AttributeReader extends Reader
     private $instantiator;
 
     /**
-     * @param InstantiatorInterface $instantiator
+     * @var ContextRenderer
      */
-    public function __construct(InstantiatorInterface $instantiator)
+    protected $renderer;
+
+    /**
+     * @param InstantiatorInterface|null $instantiator
+     */
+    public function __construct(InstantiatorInterface $instantiator = null)
     {
-        $this->instantiator = $instantiator;
+        $this->instantiator = $instantiator ?? new Facade($this);
+        $this->renderer = new ContextRenderer();
+    }
+
+    /**
+     * @param string $class
+     * @param \Reflector $context
+     */
+    protected function assertClassExists(string $class, \Reflector $context): void
+    {
+        if (! \class_exists($class)) {
+            $message = \vsprintf('The metadata class "%s" in %s was not found', [
+                $class,
+                $this->renderer->render($context)
+            ]);
+
+            throw new SemanticAttributeException($message);
+        }
     }
 
     /**

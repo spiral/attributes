@@ -33,6 +33,15 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * @param string $class
+     * @return string
+     */
+    protected function classNamespace(string $class): string
+    {
+        return \dirname(\str_replace('\\', \DIRECTORY_SEPARATOR, $class));
+    }
+
+    /**
+     * @param string $class
      * @param array $fields
      * @return object
      */
