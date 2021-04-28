@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace Spiral\Attributes\Internal;
 
-use Spiral\Attributes\Exception\AttributeException;
 use Spiral\Attributes\Exception\SemanticAttributeException;
 use Spiral\Attributes\Internal\Instantiator\Facade;
 use Spiral\Attributes\Internal\Instantiator\InstantiatorInterface;

@@ -26,11 +26,11 @@ abstract class Instantiator implements InstantiatorInterface
     protected $renderer;
 
     /**
-     * Instantiator constructor.
+     * @param ContextRenderer|null $renderer
      */
-    public function __construct()
+    public function __construct(ContextRenderer $renderer = null)
     {
-        $this->renderer = new ContextRenderer();
+        $this->renderer = $renderer ?? new ContextRenderer();
     }
 
     /**

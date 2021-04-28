@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace Spiral\Attributes\Internal;
 
 use PhpParser\Parser;
-use Spiral\Attributes\Exception\AttributeException;
 use Spiral\Attributes\Internal\FallbackAttributeReader\AttributeParser;
 use Spiral\Attributes\Internal\FallbackAttributeReader\AttributePrototype;
 use Spiral\Attributes\Internal\Instantiator\InstantiatorInterface;
