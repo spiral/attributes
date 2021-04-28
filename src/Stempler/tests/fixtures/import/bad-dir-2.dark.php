@@ -1,2 +1,0 @@
-hello
-<use:dir dir="/"/>
