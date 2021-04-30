@@ -1,1 +1,0 @@
-hello inner partial world
