@@ -1,7 +1,3 @@
-<p align="center">
-<img src="https://user-images.githubusercontent.com/2461257/112313394-d926c580-8cb8-11eb-84ea-717df4e4d167.png" width="400" alt="Spiral Framework">
-</p>
-
 # Attributes
 
 [![Latest Stable Version](https://poser.pugx.org/spiral/attributes/version)](https://packagist.org/packages/spiral/attributes)
