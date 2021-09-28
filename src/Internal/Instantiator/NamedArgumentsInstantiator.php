@@ -70,6 +70,9 @@ final class NamedArgumentsInstantiator extends Instantiator
      */
     private function resolveParameters(\ReflectionClass $ctx, \ReflectionMethod $constructor, array $arguments): array
     {
+        // Normalize numeric keys.
+        $arguments = array_merge($arguments);
+
         $passed = [];
 
         try {

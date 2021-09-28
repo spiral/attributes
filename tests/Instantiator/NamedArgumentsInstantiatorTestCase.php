@@ -62,15 +62,8 @@ class NamedArgumentsInstantiatorTestCase extends InstantiatorTestCase
             0 => 'zero',
         ]);
 
-        if (PHP_VERSION_ID < 80000) {
-            $this->assertSame('zero', $object->a);
-            $this->assertSame('one', $object->b);
-        }
-        else {
-            $this->assertSame('one', $object->a);
-            $this->assertSame('zero', $object->b);
-        }
-
+        $this->assertSame('one', $object->a);
+        $this->assertSame('zero', $object->b);
         $this->assertSame(null, $object->c);
     }
 
@@ -78,7 +71,7 @@ class NamedArgumentsInstantiatorTestCase extends InstantiatorTestCase
     {
         if (PHP_VERSION_ID < 80000) {
             $this->expectException(\BadMethodCallException::class);
-            $this->expectExceptionMessage('Unknown named parameter $5');
+            $this->expectExceptionMessage('Unknown named parameter $0');
         }
         else {
             $this->expectException(\Error::class);
@@ -93,7 +86,11 @@ class NamedArgumentsInstantiatorTestCase extends InstantiatorTestCase
 
     public function testKnownSequentialAfterNamed()
     {
-        if (PHP_VERSION_ID >= 80000) {
+        if (PHP_VERSION_ID < 80000) {
+            $this->expectException(\BadMethodCallException::class);
+            $this->expectExceptionMessage('Unknown named parameter $0');
+        }
+        else {
             $this->expectException(\Error::class);
             $this->expectExceptionMessage('Cannot use positional argument after named argument');
         }
