@@ -24,6 +24,10 @@ final class NamedArgumentsInstantiator extends Instantiator
      */
     private const ERROR_ARGUMENT_NOT_PASSED = '%s::__construct(): Argument #%d ($%s) not passed';
 
+    private const ERROR_OVERWRITE_ARGUMENT = 'Named parameter $%s overwrites previous argument';
+
+    private const ERROR_NAMED_ARG_TO_VARIADIC = 'Cannot pass named argument $%s to variadic parameter ...$%s in PHP < 8.';
+
     /**
      * @var string
      */
@@ -70,64 +74,96 @@ final class NamedArgumentsInstantiator extends Instantiator
      */
     private function resolveParameters(\ReflectionClass $ctx, \ReflectionMethod $constructor, array $arguments): array
     {
-        // Normalize numeric keys.
+        // Normalize all numeric keys, but keep string keys.
         $arguments = array_merge($arguments);
 
-        $passed = [];
-
-        try {
-            foreach ($constructor->getParameters() as $parameter) {
-                $passed[] = $this->resolveParameter($ctx, $parameter, $arguments);
+        $i = 0;
+        $namedArgsBegin = null;
+        foreach ($arguments as $k => $v) {
+            if ($k !== $i) {
+                $namedArgsBegin = $i;
+                break;
             }
-
-            if (\count($arguments)) {
-                $message = \sprintf(self::ERROR_UNKNOWN_ARGUMENT, \array_key_first($arguments));
-                throw new \BadMethodCallException($message);
-            }
-        } catch (\Throwable $e) {
-            throw Exception::withLocation($e, $constructor->getFileName(), $constructor->getStartLine());
+            ++$i;
         }
 
-        return $passed;
-    }
+        if ($namedArgsBegin === null) {
+            // Only numeric / sequential keys exist.
+            return $arguments;
+        }
 
-    /**
-     * @param \ReflectionClass $ctx
-     * @param \ReflectionParameter $param
-     * @param array $arguments
-     * @return mixed
-     * @throws \Throwable
-     */
-    private function resolveParameter(\ReflectionClass $ctx, \ReflectionParameter $param, array &$arguments)
-    {
-        switch (true) {
-            case \array_key_exists($param->getName(), $arguments):
-                try {
-                    return $arguments[$param->getName()];
-                } finally {
-                    unset($arguments[$param->getName()]);
-                }
-                // no actual falling through
+        // For any further numeric keys, one of them is now $namedArgsBegin.
+        if (array_key_exists($namedArgsBegin, $arguments)) {
+            throw new \BadMethodCallException(
+                'Cannot use positional argument after named argument.');
+        }
 
-            case \array_key_exists($param->getPosition(), $arguments):
-                try {
-                    return $arguments[$param->getPosition()];
-                } finally {
-                    unset($arguments[$param->getPosition()]);
-                }
-                // no actual falling through
+        if ($namedArgsBegin === 0) {
+            // Only named keys exist.
+            $passed = [];
+            $named = $arguments;
+        }
+        else {
+            // Sequential keys followed by named keys.
+            // No need to preserve numeric keys.
+            $passed = array_slice($arguments, 0, $namedArgsBegin);
+            $named = array_slice($arguments, $namedArgsBegin);
+        }
 
-            case $param->isDefaultValueAvailable():
-                return $param->getDefaultValue();
-
-            default:
+        $variadicParameter = null;
+        $parameters = $constructor->getParameters();
+        for ($i = $namedArgsBegin; $parameter = $parameters[$i] ?? null; ++$i) {
+            if ($parameter->isVariadic()) {
+                $variadicParameter = $parameter;
+                break;
+            }
+            $k = $parameter->getName();
+            if (array_key_exists($k, $named)) {
+                $passed[] = $named[$k];
+                unset($named[$k]);
+            }
+            elseif ($parameter->isDefaultValueAvailable()) {
+                $passed[] = $parameter->getDefaultValue();
+            }
+            else {
                 $message = \vsprintf(self::ERROR_ARGUMENT_NOT_PASSED, [
                     $ctx->getName(),
-                    $param->getPosition() + 1,
-                    $param->getName(),
+                    $parameter->getPosition() + 1,
+                    $parameter->getName(),
                 ]);
 
                 throw new \ArgumentCountError($message);
+            }
         }
+
+        if ($named === []) {
+            return $passed;
+        }
+
+        reset($named);
+        $firstOrphanKey = key($named);
+
+        foreach ($parameters as $i => $parameter) {
+            if ($i >= $namedArgsBegin) {
+                break;
+            }
+            if ($parameter->getName() === $firstOrphanKey) {
+                $message = \sprintf(self::ERROR_OVERWRITE_ARGUMENT, $firstOrphanKey);
+                throw new \BadMethodCallException($message);
+            }
+        }
+
+        if ($variadicParameter !== null) {
+            $message = \vsprintf(self::ERROR_NAMED_ARG_TO_VARIADIC, [
+                $firstOrphanKey,
+                $variadicParameter->getName(),
+            ]);
+            throw new \BadMethodCallException($message);
+        }
+
+        $message = \vsprintf(self::ERROR_UNKNOWN_ARGUMENT, [
+            $firstOrphanKey,
+        ]);
+        throw new \BadMethodCallException($message);
     }
 }

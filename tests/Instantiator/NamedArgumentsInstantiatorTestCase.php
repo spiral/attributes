@@ -71,12 +71,11 @@ class NamedArgumentsInstantiatorTestCase extends InstantiatorTestCase
     {
         if (PHP_VERSION_ID < 80000) {
             $this->expectException(\BadMethodCallException::class);
-            $this->expectExceptionMessage('Unknown named parameter $0');
         }
         else {
             $this->expectException(\Error::class);
-            $this->expectExceptionMessage('Cannot use positional argument after named argument');
         }
+        $this->expectExceptionMessage('Cannot use positional argument after named argument');
 
         $this->new(NamedArgumentConstructorFixture::class, [
             'a' => 'A',
@@ -88,12 +87,11 @@ class NamedArgumentsInstantiatorTestCase extends InstantiatorTestCase
     {
         if (PHP_VERSION_ID < 80000) {
             $this->expectException(\BadMethodCallException::class);
-            $this->expectExceptionMessage('Unknown named parameter $0');
         }
         else {
             $this->expectException(\Error::class);
-            $this->expectExceptionMessage('Cannot use positional argument after named argument');
         }
+        $this->expectExceptionMessage('Cannot use positional argument after named argument');
 
         $object = $this->new(NamedArgumentConstructorFixture::class, [
             'a' => 'A',
@@ -135,12 +133,11 @@ class NamedArgumentsInstantiatorTestCase extends InstantiatorTestCase
     {
         if (PHP_VERSION_ID < 80000) {
             $this->expectException(\BadMethodCallException::class);
-            $this->expectExceptionMessage('Unknown named parameter $0');
         }
         else {
             $this->expectException(\Error::class);
-            $this->expectExceptionMessage('Named parameter $a overwrites previous argument');
         }
+        $this->expectExceptionMessage('Named parameter $a overwrites previous argument');
 
         $this->new(NamedArgumentConstructorFixture::class, [
             'zero',
