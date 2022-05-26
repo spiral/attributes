@@ -40,4 +40,16 @@ class NamedArgumentsInstantiatorTestCase extends InstantiatorTestCase
         $this->assertSame(42, $object->b);
         $this->assertSame(null, $object->c);
     }
+
+    public function testNamedConstructorInstantorException(): void
+    {
+        $this->expectException(\Throwable::class);
+        $this->expectExceptionMessage('Unknown named parameter $d');
+        $this->new(NamedArgumentConstructorFixture::class, [
+            'a' => 23,
+            'b' => 42,
+            'c' => 1,
+            'd' => 5
+        ]);
+    }
 }
