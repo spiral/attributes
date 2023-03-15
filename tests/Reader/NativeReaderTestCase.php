@@ -18,8 +18,6 @@ use Spiral\Attributes\ReaderInterface;
 use Spiral\Tests\Attributes\Reader\Fixture\UndefinedMeta;
 
 /**
- * @requires PHP >= 8.0
- *
  * @group unit
  * @group reader
  */
