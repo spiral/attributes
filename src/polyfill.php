@@ -10,7 +10,6 @@
 declare(strict_types=1);
 
 namespace Doctrine\Common\Annotations {
-
     use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 
     if (!\interface_exists(NamedArgumentConstructorAnnotation::class)) {
@@ -26,11 +25,9 @@ namespace Doctrine\Common\Annotations {
         {
         }
     }
-
 }
 
 namespace Doctrine\Common\Annotations\Annotation {
-
     if (!\class_exists(NamedArgumentConstructor::class, false)) {
         /**
          * Annotation that indicates that the annotated class should be
@@ -44,11 +41,9 @@ namespace Doctrine\Common\Annotations\Annotation {
         {
         }
     }
-
 }
 
 namespace {
-
     use JetBrains\PhpStorm\ExpectedValues;
 
     if (!\class_exists(Attribute::class, false)) {
@@ -120,5 +115,4 @@ namespace {
             public $flags;
         }
     }
-
 }
