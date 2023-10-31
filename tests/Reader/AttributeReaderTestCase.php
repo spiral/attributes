@@ -14,6 +14,9 @@ namespace Spiral\Tests\Attributes\Reader;
 use Spiral\Attributes\AttributeReader;
 use Spiral\Attributes\Exception\SemanticAttributeException;
 use Spiral\Attributes\ReaderInterface;
+use Spiral\Tests\Attributes\Reader\Fixture\AnnotatedClass;
+use Spiral\Tests\Attributes\Reader\Fixture\ClassWithAnnotatedInterface;
+use Spiral\Tests\Attributes\Reader\Fixture\ClassWithAnnotatedTrait;
 use Spiral\Tests\Attributes\Reader\Fixture\UndefinedMeta;
 
 /**
@@ -25,6 +28,15 @@ class AttributeReaderTestCase extends ReaderTestCase
     protected function getReader(): ReaderInterface
     {
         return new AttributeReader();
+    }
+
+    public function testClassMetadataCount(): void
+    {
+        parent::testClassMetadataCount();
+
+        $this->assertCount($this->classMetadataCount,
+            $this->getClassMetadata(ClassWithAnnotatedInterface::class)
+        );
     }
 
     public function testUndefinedClassMeta(): void

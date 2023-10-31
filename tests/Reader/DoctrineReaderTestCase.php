@@ -13,6 +13,7 @@ namespace Spiral\Tests\Attributes\Reader;
 
 use Spiral\Attributes\AnnotationReader;
 use Spiral\Attributes\ReaderInterface;
+use Spiral\Tests\Attributes\Reader\Fixture\ClassWithAnnotatedInterface;
 
 /**
  * Doctrine reader does not support:
@@ -34,5 +35,14 @@ class DoctrineReaderTestCase extends ReaderTestCase
     protected function getReader(): ReaderInterface
     {
         return new AnnotationReader();
+    }
+
+    public function testClassMetadataCount(): void
+    {
+        parent::testClassMetadataCount();
+
+        $this->assertCount($this->classMetadataCount,
+            $this->getClassMetadata(ClassWithAnnotatedInterface::class)
+        );
     }
 }

@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\Attributes\Reader;
 
-use Spiral\Attributes\Exception\SemanticAttributeException;
 use Spiral\Tests\Attributes\Concerns\InteractWithMetadata;
 use Spiral\Tests\Attributes\Reader\Fixture\AnnotatedClass;
 use Spiral\Tests\Attributes\Reader\Fixture\Annotation\ClassAnnotation;
@@ -22,7 +21,6 @@ use Spiral\Tests\Attributes\Reader\Fixture\Annotation\MethodAnnotation;
 use Spiral\Tests\Attributes\Reader\Fixture\Annotation\MethodParameterAnnotation;
 use Spiral\Tests\Attributes\Reader\Fixture\Annotation\PropertyAnnotation;
 use Spiral\Tests\Attributes\Reader\Fixture\ClassWithAnnotatedTrait;
-use Spiral\Tests\Attributes\Reader\Fixture\UndefinedMeta;
 use Spiral\Tests\Attributes\TestCase;
 
 /**

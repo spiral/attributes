@@ -30,6 +30,10 @@ final class DoctrineAnnotationReader extends BaseReader
 
         yield from $this->filter($name, $result);
 
+        foreach ($class->getInterfaces() as $interface) {
+            yield from $this->getClassMetadata($interface, $name);
+        }
+
         foreach ($class->getTraits() as $trait) {
             yield from $this->getClassMetadata($trait, $name);
         }
