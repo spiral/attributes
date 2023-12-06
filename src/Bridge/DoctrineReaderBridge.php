@@ -27,6 +27,7 @@ use Spiral\Attributes\ReaderInterface;
  *  //
  *  $doctrine = new \Doctrine\Common\Annotations\CachedReader($bridge, $cache);
  * </code>
+ * @deprecated
  */
 final class DoctrineReaderBridge implements Reader
 {

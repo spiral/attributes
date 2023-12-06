@@ -25,6 +25,7 @@ if (!\class_exists(DoctrineNamedArgumentConstructor::class, false)) {
  *
  * @Annotation
  * @Target({ "CLASS" })
+ * @deprecated
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 final class NamedArgumentConstructor extends DoctrineNamedArgumentConstructor

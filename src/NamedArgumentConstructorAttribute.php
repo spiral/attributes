@@ -21,6 +21,7 @@ if (!\class_exists(NamedArgumentConstructorAnnotation::class, false)) {
 /**
  * Marker interface for PHP7/PHP8 compatible support for named arguments
  * (and constructor property promotion).
+ * @deprecated
  */
 interface NamedArgumentConstructorAttribute extends NamedArgumentConstructorAnnotation
 {
