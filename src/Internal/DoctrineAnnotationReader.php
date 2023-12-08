@@ -13,6 +13,9 @@ use Spiral\Attributes\Exception\SemanticAttributeException;
 use Spiral\Attributes\Exception\SyntaxAttributeException;
 use Spiral\Attributes\Reader as BaseReader;
 
+/**
+ * @deprecated
+ */
 final class DoctrineAnnotationReader extends BaseReader
 {
     private Reader $reader;

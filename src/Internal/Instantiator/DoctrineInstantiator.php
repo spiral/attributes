@@ -12,6 +12,7 @@ use Spiral\Attributes\Exception\SyntaxAttributeException;
 /**
  * @internal DoctrineInstantiator is an internal library class, please do not use it in your code.
  * @psalm-internal Spiral\Attributes
+ * @deprecated Use {@see NamedArgumentsInstantiator} instead.
  */
 final class DoctrineInstantiator extends Instantiator
 {
