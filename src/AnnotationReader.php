@@ -15,6 +15,10 @@ final class AnnotationReader extends Decorator
 {
     public function __construct(Reader $reader = null)
     {
+        AnnotationReader::addGlobalIgnoredName('mixin');
+        AnnotationReader::addGlobalIgnoredName('yield');
+        AnnotationReader::addGlobalIgnoredName('note');
+
         parent::__construct(new DoctrineAnnotationReader($reader));
     }
 }
