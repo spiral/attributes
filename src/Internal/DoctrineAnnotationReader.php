@@ -24,6 +24,10 @@ final class DoctrineAnnotationReader extends BaseReader
     {
         $this->checkAvailability();
 
+        DoctrineReader::addGlobalIgnoredName('mixin');
+        DoctrineReader::addGlobalIgnoredName('yield');
+        DoctrineReader::addGlobalIgnoredName('note');
+
         $this->reader = $reader ?? new DoctrineReader();
     }
 

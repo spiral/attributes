@@ -13,6 +13,8 @@ namespace Spiral\Tests\Attributes\Reader;
 
 use Spiral\Attributes\AnnotationReader;
 use Spiral\Attributes\ReaderInterface;
+use Spiral\Tests\Attributes\Reader\Fixture\Annotation\ClassAnnotation;
+use Spiral\Tests\Attributes\Reader\Fixture\ClassWithIgnoredAnnotations;
 
 /**
  * Doctrine reader does not support:
@@ -34,5 +36,17 @@ class DoctrineReaderTestCase extends ReaderTestCase
     protected function getReader(): ReaderInterface
     {
         return new AnnotationReader();
+    }
+
+    public function testIgnoredAnnotations(): void
+    {
+        $reader = $this->getReader();
+
+        $this->assertEquals(
+            [new ClassAnnotation()],
+            $this->iterableToArray($reader->getClassMetadata(
+                $this->getReflectionClass(ClassWithIgnoredAnnotations::class)
+            ))
+        );
     }
 }
