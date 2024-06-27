@@ -27,6 +27,7 @@ final class DoctrineAnnotationReader extends BaseReader
         DoctrineReader::addGlobalIgnoredName('mixin');
         DoctrineReader::addGlobalIgnoredName('yield');
         DoctrineReader::addGlobalIgnoredName('note');
+        DoctrineReader::addGlobalIgnoredName('type');
 
         $this->reader = $reader ?? new DoctrineReader();
     }
