@@ -10,6 +10,7 @@ use Spiral\Tests\Attributes\Reader\Fixture\Annotation\ClassAnnotation;
  * @mixin
  * @yield
  * @note
+ * @type
  * @ClassAnnotation
  */
 class ClassWithIgnoredAnnotations
