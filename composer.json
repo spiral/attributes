@@ -34,6 +34,12 @@
             "email": "kirill.nesmeyanov@spiralscout.com"
         }
     ],
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/spiral"
+        }
+    ],
     "require": {
         "php": ">=8.1",
         "psr/cache": "1 - 3",
@@ -58,12 +64,6 @@
             "Spiral\\Tests\\Attributes\\": "tests"
         }
     },
-    "funding": [
-        {
-            "type": "github",
-            "url": "https://github.com/sponsors/roadrunner-server"
-        }
-    ],
     "scripts": {
         "analyze": [
             "psalm --no-cache"
