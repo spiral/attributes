@@ -13,7 +13,7 @@ use Spiral\Attributes\Internal\DoctrineAnnotationReader;
  */
 final class AnnotationReader extends Decorator
 {
-    public function __construct(Reader $reader = null)
+    public function __construct(?Reader $reader = null)
     {
         parent::__construct(new DoctrineAnnotationReader($reader));
     }

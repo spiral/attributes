@@ -23,6 +23,4 @@ if (!\class_exists(NamedArgumentConstructorAnnotation::class, false)) {
  * (and constructor property promotion).
  * @deprecated
  */
-interface NamedArgumentConstructorAttribute extends NamedArgumentConstructorAnnotation
-{
-}
+interface NamedArgumentConstructorAttribute extends NamedArgumentConstructorAnnotation {}

@@ -21,8 +21,6 @@ final class DoctrineInstantiator extends Instantiator
      * a format compatible with doctrine/annotations.
      *
      * @see DocParser::Annotation()
-     *
-     * @var string
      */
     private const ERROR_INVALID_PROPERTY =
         'The attribute #[%s] declared on %s does not have a property named "%s".' . "\n" .
@@ -34,17 +32,12 @@ final class DoctrineInstantiator extends Instantiator
      * in a format compatible with doctrine/annotations.
      *
      * @see DocParser::syntaxError()
-     *
-     * @var string
      */
     private const ERROR_INVALID_ARGUMENT = 'Expected %s, got %s';
 
-    /**
-     * @var string
-     */
     private const DEFAULT_PROPERTY_NAME = 'value';
 
-    public function instantiate(\ReflectionClass $attr, array $arguments, \Reflector $context = null): object
+    public function instantiate(\ReflectionClass $attr, array $arguments, ?\Reflector $context = null): object
     {
         $arguments = $this->formatArguments($arguments);
 

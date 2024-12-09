@@ -27,9 +27,8 @@ final class HashKeyGenerator implements KeyGeneratorInterface
 
     public function __construct(
         private readonly KeyGeneratorInterface $generator,
-        private readonly string $algo = self::DEFAULT_HASH_ALGO
-    ) {
-    }
+        private readonly string $algo = self::DEFAULT_HASH_ALGO,
+    ) {}
 
     public function forClass(\ReflectionClass $class): string
     {

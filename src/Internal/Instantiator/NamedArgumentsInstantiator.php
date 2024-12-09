@@ -12,7 +12,7 @@ use Spiral\Attributes\Internal\Exception;
  */
 final class NamedArgumentsInstantiator extends Instantiator
 {
-    public function instantiate(\ReflectionClass $attr, array $arguments, \Reflector $context = null): object
+    public function instantiate(\ReflectionClass $attr, array $arguments, ?\Reflector $context = null): object
     {
         try {
             return $attr->newInstanceArgs($arguments);

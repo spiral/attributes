@@ -25,5 +25,5 @@ interface InstantiatorInterface
      * @return T
      * @throws \Throwable
      */
-    public function instantiate(\ReflectionClass $attr, array $arguments, \Reflector $context = null): object;
+    public function instantiate(\ReflectionClass $attr, array $arguments, ?\Reflector $context = null): object;
 }

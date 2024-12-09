@@ -21,9 +21,7 @@ namespace Doctrine\Common\Annotations {
          *             Use the Annotation @NamedArgumentConstructor instead.
          * @psalm-suppress UnrecognizedStatement
          */
-        interface NamedArgumentConstructorAnnotation
-        {
-        }
+        interface NamedArgumentConstructorAnnotation {}
     }
 }
 
@@ -37,8 +35,6 @@ namespace Doctrine\Common\Annotations\Annotation {
          * @Target("CLASS")
          */
         #[\Attribute(\Attribute::TARGET_CLASS)]
-        class NamedArgumentConstructor
-        {
-        }
+        class NamedArgumentConstructor {}
     }
 }

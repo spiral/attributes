@@ -16,14 +16,14 @@ final class Facade implements InstantiatorInterface
     private readonly NamedArgumentsInstantiator $named;
     private readonly ReaderInterface $reader;
 
-    public function __construct(ReaderInterface $reader = null)
+    public function __construct(?ReaderInterface $reader = null)
     {
         $this->reader = $reader ?? new AttributeReader($this);
         $this->doctrine = new DoctrineInstantiator();
         $this->named = new NamedArgumentsInstantiator();
     }
 
-    public function instantiate(\ReflectionClass $attr, array $arguments, \Reflector $context = null): object
+    public function instantiate(\ReflectionClass $attr, array $arguments, ?\Reflector $context = null): object
     {
         if ($this->isNamedArguments($attr)) {
             return $this->named->instantiate($attr, $arguments, $context);

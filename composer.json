@@ -9,7 +9,6 @@
         "issues": "https://github.com/spiral/attributes/issues",
         "source": "https://github.com/spiral/attributes",
         "docs": "https://spiral.dev/docs",
-        "forum": "https://forum.spiral.dev",
         "chat": "https://discord.gg/V6EK4he"
     },
     "authors": [
@@ -49,6 +48,7 @@
         "doctrine/annotations": "^1.14 || ^2.0",
         "jetbrains/phpstorm-attributes": "^1.0",
         "phpunit/phpunit": "^9.5.20",
+        "spiral/code-style": "^2.2",
         "vimeo/psalm": "^5.17"
     },
     "autoload": {
@@ -67,7 +67,9 @@
     "scripts": {
         "analyze": [
             "psalm --no-cache"
-        ]
+        ],
+        "cs:diff": "php-cs-fixer fix --dry-run -v --diff",
+        "cs:fix": "php-cs-fixer fix -v"
     },
     "config": {
         "sort-packages": true

@@ -14,7 +14,7 @@ final class Psr6CachedReader extends CachedReader
     public function __construct(
         ReaderInterface $reader,
         private readonly CacheItemPoolInterface $cache,
-        KeyGeneratorInterface $generator = null
+        ?KeyGeneratorInterface $generator = null,
     ) {
         parent::__construct($reader, $generator);
     }
@@ -28,7 +28,7 @@ final class Psr6CachedReader extends CachedReader
 
         if (!$item->isHit()) {
             $this->cache->save(
-                $item->set($then())
+                $item->set($then()),
             );
         }
 

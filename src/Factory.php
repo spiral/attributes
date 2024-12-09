@@ -28,8 +28,8 @@ class Factory implements FactoryInterface
     {
         return $this->decorateByCache(
             $this->decorateByAnnotations(
-                new AttributeReader()
-            )
+                new AttributeReader(),
+            ),
         );
     }
 

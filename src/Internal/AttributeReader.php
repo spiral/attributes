@@ -18,7 +18,7 @@ abstract class AttributeReader extends Reader
     protected ContextRenderer $renderer;
     private InstantiatorInterface $instantiator;
 
-    public function __construct(InstantiatorInterface $instantiator = null)
+    public function __construct(?InstantiatorInterface $instantiator = null)
     {
         $this->instantiator = $instantiator ?? new Facade($this);
         $this->renderer = new ContextRenderer();
@@ -27,7 +27,7 @@ abstract class AttributeReader extends Reader
     /**
      * @throws \Throwable
      */
-    public function getClassMetadata(\ReflectionClass $class, string $name = null): iterable
+    public function getClassMetadata(\ReflectionClass $class, ?string $name = null): iterable
     {
         $attributes = $this->getClassAttributes($class, $name);
 
@@ -43,7 +43,7 @@ abstract class AttributeReader extends Reader
     /**
      * @throws \Throwable
      */
-    public function getFunctionMetadata(\ReflectionFunctionAbstract $function, string $name = null): iterable
+    public function getFunctionMetadata(\ReflectionFunctionAbstract $function, ?string $name = null): iterable
     {
         $attributes = $this->getFunctionAttributes($function, $name);
 
@@ -55,7 +55,7 @@ abstract class AttributeReader extends Reader
     /**
      * @throws \Throwable
      */
-    public function getPropertyMetadata(\ReflectionProperty $property, string $name = null): iterable
+    public function getPropertyMetadata(\ReflectionProperty $property, ?string $name = null): iterable
     {
         $attributes = $this->getPropertyAttributes($property, $name);
 
@@ -67,7 +67,7 @@ abstract class AttributeReader extends Reader
     /**
      * @throws \Throwable
      */
-    public function getConstantMetadata(\ReflectionClassConstant $constant, string $name = null): iterable
+    public function getConstantMetadata(\ReflectionClassConstant $constant, ?string $name = null): iterable
     {
         $attributes = $this->getConstantAttributes($constant, $name);
 
@@ -79,7 +79,7 @@ abstract class AttributeReader extends Reader
     /**
      * @throws \Throwable
      */
-    public function getParameterMetadata(\ReflectionParameter $parameter, string $name = null): iterable
+    public function getParameterMetadata(\ReflectionParameter $parameter, ?string $name = null): iterable
     {
         $attributes = $this->getParameterAttributes($parameter, $name);
 
