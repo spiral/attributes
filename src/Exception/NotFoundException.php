@@ -7,6 +7,4 @@ namespace Spiral\Attributes\Exception;
 /**
  * @deprecated
  */
-class NotFoundException extends AttributeException
-{
-}
+class NotFoundException extends AttributeException {}

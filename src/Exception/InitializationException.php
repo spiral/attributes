@@ -7,6 +7,4 @@ namespace Spiral\Attributes\Exception;
 /**
  * @deprecated
  */
-class InitializationException extends AttributeException
-{
-}
+class InitializationException extends AttributeException {}

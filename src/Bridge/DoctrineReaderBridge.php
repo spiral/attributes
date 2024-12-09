@@ -32,14 +32,13 @@ use Spiral\Attributes\ReaderInterface;
 final class DoctrineReaderBridge implements Reader
 {
     public function __construct(
-        private readonly ReaderInterface $reader
-    ) {
-    }
+        private readonly ReaderInterface $reader,
+    ) {}
 
     public function getClassAnnotations(\ReflectionClass $class): array
     {
         return $this->iterableToArray(
-            $this->reader->getClassMetadata($class)
+            $this->reader->getClassMetadata($class),
         );
     }
 
@@ -51,7 +50,7 @@ final class DoctrineReaderBridge implements Reader
     public function getMethodAnnotations(\ReflectionMethod $method): array
     {
         return $this->iterableToArray(
-            $this->reader->getFunctionMetadata($method)
+            $this->reader->getFunctionMetadata($method),
         );
     }
 
@@ -63,7 +62,7 @@ final class DoctrineReaderBridge implements Reader
     public function getPropertyAnnotations(\ReflectionProperty $property): array
     {
         return $this->iterableToArray(
-            $this->reader->getPropertyMetadata($property)
+            $this->reader->getPropertyMetadata($property),
         );
     }
 

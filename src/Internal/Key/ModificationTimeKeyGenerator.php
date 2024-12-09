@@ -16,8 +16,8 @@ final class ModificationTimeKeyGenerator implements KeyGeneratorInterface
     public function forClass(\ReflectionClass $class): string
     {
         if ($class->isUserDefined()) {
-            return (string)\filemtime(
-                $class->getFileName()
+            return (string) \filemtime(
+                $class->getFileName(),
             );
         }
 
@@ -29,14 +29,14 @@ final class ModificationTimeKeyGenerator implements KeyGeneratorInterface
     public function forProperty(\ReflectionProperty $prop): string
     {
         return $this->forClass(
-            $prop->getDeclaringClass()
+            $prop->getDeclaringClass(),
         );
     }
 
     public function forConstant(\ReflectionClassConstant $const): string
     {
         return $this->forClass(
-            $const->getDeclaringClass()
+            $const->getDeclaringClass(),
         );
     }
 
@@ -44,13 +44,13 @@ final class ModificationTimeKeyGenerator implements KeyGeneratorInterface
     {
         if ($fn instanceof \ReflectionMethod) {
             return $this->forClass(
-                $fn->getDeclaringClass()
+                $fn->getDeclaringClass(),
             );
         }
 
         if ($fn->isUserDefined()) {
-            return (string)\filemtime(
-                $fn->getFileName()
+            return (string) \filemtime(
+                $fn->getFileName(),
             );
         }
 
@@ -64,7 +64,7 @@ final class ModificationTimeKeyGenerator implements KeyGeneratorInterface
     public function forParameter(\ReflectionParameter $param): string
     {
         return $this->forFunction(
-            $param->getDeclaringFunction()
+            $param->getDeclaringFunction(),
         );
     }
 }

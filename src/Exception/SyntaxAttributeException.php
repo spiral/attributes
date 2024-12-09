@@ -7,6 +7,4 @@ namespace Spiral\Attributes\Exception;
 /**
  * @deprecated
  */
-class SyntaxAttributeException extends AttributeException
-{
-}
+class SyntaxAttributeException extends AttributeException {}

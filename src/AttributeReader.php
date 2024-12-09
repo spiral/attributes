@@ -10,7 +10,7 @@ use Spiral\Attributes\Internal\NativeAttributeReader;
 
 final class AttributeReader extends Decorator
 {
-    public function __construct(InstantiatorInterface $instantiator = null)
+    public function __construct(?InstantiatorInterface $instantiator = null)
     {
         parent::__construct(new NativeAttributeReader($instantiator));
     }

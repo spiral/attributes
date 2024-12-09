@@ -28,6 +28,4 @@ if (!\class_exists(DoctrineNamedArgumentConstructor::class, false)) {
  * @deprecated
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
-final class NamedArgumentConstructor extends DoctrineNamedArgumentConstructor
-{
-}
+final class NamedArgumentConstructor extends DoctrineNamedArgumentConstructor {}

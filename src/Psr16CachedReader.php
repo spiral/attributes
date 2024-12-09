@@ -14,7 +14,7 @@ final class Psr16CachedReader extends CachedReader
     public function __construct(
         ReaderInterface $reader,
         private readonly CacheInterface $cache,
-        KeyGeneratorInterface $generator = null
+        ?KeyGeneratorInterface $generator = null,
     ) {
         parent::__construct($reader, $generator);
     }

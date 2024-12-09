@@ -18,7 +18,7 @@ interface ReaderInterface
      *
      * @return iterable<T> A list of class annotations and/or attributes.
      */
-    public function getClassMetadata(\ReflectionClass $class, string $name = null): iterable;
+    public function getClassMetadata(\ReflectionClass $class, ?string $name = null): iterable;
 
     /**
      * Gets the attribute or annotation applied to a class.
@@ -49,7 +49,7 @@ interface ReaderInterface
      *
      * @return iterable<T> A list of function annotations and/or attributes.
      */
-    public function getFunctionMetadata(\ReflectionFunctionAbstract $function, string $name = null): iterable;
+    public function getFunctionMetadata(\ReflectionFunctionAbstract $function, ?string $name = null): iterable;
 
     /**
      * Gets the attribute or annotation applied to a function or method.
@@ -79,7 +79,7 @@ interface ReaderInterface
      *
      * @return iterable<T> A list of property annotations and/or attributes.
      */
-    public function getPropertyMetadata(\ReflectionProperty $property, string $name = null): iterable;
+    public function getPropertyMetadata(\ReflectionProperty $property, ?string $name = null): iterable;
 
     /**
      * Gets the attribute or annotation applied to a property.
@@ -108,7 +108,7 @@ interface ReaderInterface
      *
      * @return iterable<T> A list of constant annotations and/or attributes.
      */
-    public function getConstantMetadata(\ReflectionClassConstant $constant, string $name = null): iterable;
+    public function getConstantMetadata(\ReflectionClassConstant $constant, ?string $name = null): iterable;
 
     /**
      * Gets the attribute or annotation applied to a class constant.
@@ -138,7 +138,7 @@ interface ReaderInterface
      *
      * @return iterable<T> A list of parameter annotations and/or attributes.
      */
-    public function getParameterMetadata(\ReflectionParameter $parameter, string $name = null): iterable;
+    public function getParameterMetadata(\ReflectionParameter $parameter, ?string $name = null): iterable;
 
     /**
      * Gets the attribute or annotation applied to a function's parameter.

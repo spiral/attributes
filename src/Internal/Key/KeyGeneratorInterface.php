@@ -23,8 +23,6 @@ interface KeyGeneratorInterface
      * Including:
      * - Extension classes (not user defined {@see \ReflectionClass::isUserDefined()}).
      * - Anonymous classes (i.e. {@see \ReflectionClass::isAnonymous()}).
-     *
-     * @param \ReflectionClass $class
      */
     public function forClass(\ReflectionClass $class): string;
 
@@ -41,8 +39,6 @@ interface KeyGeneratorInterface
      * The method can accept only objects of reflection of
      * class constants:
      *  - {@see \ReflectionClassConstant}
-     *
-     * @param \ReflectionClassConstant $const
      */
     public function forConstant(\ReflectionClassConstant $const): string;
 
@@ -58,8 +54,6 @@ interface KeyGeneratorInterface
      * Including:
      * - Extension functions (not user defined {@see \ReflectionFunctionAbstract::isUserDefined()}).
      * - Anonymous functions (i.e. {@see \ReflectionFunctionAbstract::isClosure()}).
-     *
-     * @param \ReflectionFunctionAbstract $fn
      */
     public function forFunction(\ReflectionFunctionAbstract $fn): string;
 
@@ -72,8 +66,6 @@ interface KeyGeneratorInterface
      *  - {@see \ReflectionMethod}
      *  - {@see \ReflectionFunction}
      *  - {@see \ReflectionFunctionAbstract}
-     *
-     * @param \ReflectionParameter $param
      */
     public function forParameter(\ReflectionParameter $param): string;
 }
