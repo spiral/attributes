@@ -34,6 +34,7 @@ final class DoctrineInstantiator extends Instantiator
      * @see DocParser::syntaxError()
      */
     private const ERROR_INVALID_ARGUMENT = 'Expected %s, got %s';
+
     private const DEFAULT_PROPERTY_NAME = 'value';
 
     public function instantiate(\ReflectionClass $attr, array $arguments, ?\Reflector $context = null): object
